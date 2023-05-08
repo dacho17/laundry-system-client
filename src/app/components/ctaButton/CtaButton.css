@@ -1,0 +1,30 @@
+.cta-button {
+    min-width: 120px;
+    padding: 18px 2% 18px 2%;
+    text-decoration: none;
+    background-color: var(--success-green);
+    color: var(--white);
+    font-size: var(--ctabutton-font-large-screen);
+    font-weight: 500;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    transition: 0.6s;
+    max-width: 240px;
+}
+
+.cta-button:hover {
+    color: var(--beige);
+}
+
+.cta-button:disabled {
+    background-color: var(--black);
+    cursor: not-allowed;
+}
+
+@media only screen and (max-width: 800px) {
+    .cta-button {
+        font-size: var(--ctabutton-font-mid-screen);
+    }
+}

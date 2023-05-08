@@ -1,0 +1,42 @@
+.login-form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    border: 2px solid var(--coliv-dark-green);
+    margin-left: 20%;
+    margin-right: 20%;
+    padding: 5%;
+}
+
+.form__title {
+    font-size: var(--title-font-large-screen);
+}
+
+.login-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+#forgot-password-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: var(--body-font-large-screen);
+}
+
+.error-msg {
+    color: var(--error-red);
+    font-size: var(--body-font-large-screen);
+}
+
+@media only screen and (max-width: 800px) {
+    .login-form-container {
+        margin-left: 2%;
+        margin-right: 2%;
+    }
+}

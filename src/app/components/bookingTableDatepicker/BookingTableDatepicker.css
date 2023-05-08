@@ -1,0 +1,21 @@
+#booking-table__datepicker-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#booking-table__datepicker {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#booking-table__datepicker-current-date {
+    margin-left: 40px;
+    margin-right: 40px;
+}
+

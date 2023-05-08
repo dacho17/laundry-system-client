@@ -1,0 +1,25 @@
+.registered-tenants-section-table__entry {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+
+    background-color: transparent;
+    border: none;
+    color: var(--coliv-dark-green);
+}
+
+.registered-tenants-section-table__entry:hover:not(:disabled) {
+    cursor: pointer;
+    background-color: var(--beige);
+}
+
+.registered-tenants-section-table__item {
+    width: 27%;
+    font-size: var(--item-font-large-screen);
+    text-align: center;
+    padding-left: 1%;
+    padding-right: 1%;
+}

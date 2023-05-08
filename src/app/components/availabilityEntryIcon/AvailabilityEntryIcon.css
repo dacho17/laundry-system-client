@@ -1,0 +1,32 @@
+.availability-entry__icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 64px;
+    width: 80px;
+    border-radius: 5px;
+    color: var(--white);
+}
+
+.available {
+    background-color: var(--success-green);
+}
+
+.not-available {
+    background-color: var(--error-red);
+}
+
+@media only screen and (max-width: 800px) {
+    .availability-entry__icon {
+        height: 40px;
+        width: 50px;
+    }    
+}
+
+@media only screen and (max-width: 400px) {
+    .availability-entry__icon {
+        height: 40px;
+        width: 50px;
+    }
+}

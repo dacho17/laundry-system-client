@@ -1,0 +1,102 @@
+.page-content {
+    padding: 5% 10% 5% 10%;
+    width: 80%;
+    height: 90%;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    background-color: transparent;
+}
+
+.button-container:hover:not(:disabled) {
+    cursor: pointer;
+    background-color: var(--beige);
+}
+
+.section-container {
+    padding: 2% 4% 2% 4%;
+    width: 92%;
+    border: 3px solid var(--coliv-dark-green);
+    border-radius: 5px;
+}
+
+.section {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.section-title {
+    font-size: var(--title-font-large-screen);
+}
+
+.section-text {
+    font-size: var(--body-font-large-screen);
+}
+
+.message-container-centered {
+    width: 90%;
+    height: 100%;
+    padding-left: 5%;
+    padding-right: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: var(--title-font-large-screen);
+}
+
+.success-msg {
+    color: var(--success-green);
+}
+
+.fail-msg {
+    color: var(--error-red);
+}
+
+/* Margin functions */
+.margin-right-1 {
+    margin-right: 10px;
+}
+
+.margin-right-2 {
+    margin-right: 20px;
+}
+
+.margin-right-3 {
+    margin-right: 20px;
+}
+
+.margin-bottom-1 {
+    margin-bottom: 10px;
+}
+
+.margin-bottom-2 {
+    margin-bottom: 20px;
+}
+
+.margin-bottom-3 {
+    margin-bottom: 30px;
+}
+
+.margin-top-2 {
+    margin-top: 20px;
+}
+
+.margin-top-3 {
+    margin-top: 30px;
+}
+
+@media only screen and (max-width: 800px) {
+    .section {
+        flex-direction: column;
+    }
+}

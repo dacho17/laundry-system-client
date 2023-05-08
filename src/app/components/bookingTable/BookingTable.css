@@ -1,0 +1,113 @@
+#booking-table-container {
+    padding: 10px 10% 10px 10%;
+    width: 80%;
+    border: 2px solid var(--coliv-dark-green);
+    border-radius: 5px;
+}
+
+#booking-table__header {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.booking-table__header-item {
+    width: 50%;
+    align-self: center;
+}
+
+#booking-table {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    height: 400px;
+    overflow: scroll;
+}
+
+.booking-table__entry {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.booking-table__item {
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.icon-margin-container {
+    margin-right: 20px;
+}
+
+@media only screen and (max-width: 1000px) {
+    #booking-table__header {
+        display: none;
+    }
+
+    #booking-table {
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        overflow: scroll;
+    }
+
+    .booking-table__entry {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        width: 40%;
+        margin-bottom: 10px;
+    }
+
+    .icon-margin-container {
+        margin-bottom: 10px;
+        margin-right: 0;
+    }
+
+    .booking-table__item {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+}
+
+@media only screen and (max-width: 450px) {
+    #booking-table__header {
+        display: none;
+    }
+
+    .booking-table__entry {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .icon-margin-container {
+        margin-bottom: 10px;
+        margin-right: 0;
+    }
+
+    .booking-table__item {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+}

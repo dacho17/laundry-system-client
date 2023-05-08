@@ -1,0 +1,25 @@
+.registered-laundry-assets-section-table__entry {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+
+    background-color: transparent;
+    border: none;
+    color: var(--coliv-dark-green);
+}
+
+.registered-laundry-assets-section-table__entry:hover:not(:disabled) {
+    cursor: pointer;
+    background-color: var(--beige);
+}
+
+.registered-laundry-assets-section-table__item {
+    width: 45%;
+    font-size: var(--item-font-large-screen);
+    text-align: center;
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+}

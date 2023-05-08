@@ -1,0 +1,28 @@
+.form-container {
+    /* border: 2px solid var(--coliv-dark-green); */
+    padding: 2% 4%;
+    width: 42%;
+}
+
+.register-payment-form {
+    width: 100%;
+}
+
+.short-input-field {
+    width: 50%;
+}
+
+.error-msg {
+    color: var(--error-red);
+    font-size: var(--body-font-large-screen);
+}
+
+@media only screen and (max-width: 800px) {
+    .form-container {
+        width: 92%;
+    }
+
+    /* .account-info-form {
+        width: 100%;
+    } */
+}

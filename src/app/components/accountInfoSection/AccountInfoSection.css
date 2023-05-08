@@ -1,0 +1,11 @@
+@media only screen and (max-width: 800px) {
+    #accommodation-information {
+        padding-left: 4%;
+        padding-top: 10%;
+    }
+
+    #current-payment-information {
+        padding-left: 4%;
+        padding-top: 10%;
+    }
+}

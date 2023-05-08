@@ -1,0 +1,9 @@
+#current-payment-information {
+    width: 100%;
+}
+
+#inactive-payment-cards {
+    height: 300px;
+    overflow: scroll;
+    width: 100%;
+}

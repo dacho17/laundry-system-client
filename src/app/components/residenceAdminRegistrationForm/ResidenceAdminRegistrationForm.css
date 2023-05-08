@@ -1,0 +1,24 @@
+.residence-admin-registration-form-container {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    border: 2px solid var(--coliv-dark-green);
+    padding: 5%;
+}
+
+.residence-admin-registration-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+@media only screen and (max-width: 1000px) {
+    .residence-admin-registration-form-container {
+        width: 90%;
+        border: none;
+    }
+}

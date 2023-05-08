@@ -1,0 +1,24 @@
+#booking-section {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+}
+
+.dropdown-container {
+    width: 20%;
+    margin-right: 10%;
+}
+
+@media only screen and (max-width: 1000px) {
+    #booking-section {
+        flex-direction: column;
+    }
+
+    .dropdown-container {
+        position: relative;
+        margin-bottom: 20px;
+    }
+}

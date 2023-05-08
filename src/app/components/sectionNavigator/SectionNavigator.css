@@ -1,0 +1,28 @@
+#section-navigator {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.section-navigator__link {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 50px;
+    font-size: var(--item-font-large-screen);
+}
+
+.section-navigator__link:hover {
+    cursor: pointer;
+}
+
+.active {
+    background-color: var(--coliv-dark-green);
+    color: var(--white);
+}

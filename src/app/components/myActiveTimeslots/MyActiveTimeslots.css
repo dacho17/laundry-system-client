@@ -1,0 +1,94 @@
+#my-active-timeslots-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+}
+
+.my-active-timeslots-section__header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.my-active-timeslots-section__title {
+    width: 33%;
+    font-size: var(--title-font-large-screen);
+    text-align: center;
+}
+
+.my-active-timeslots-section-table {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    padding-top: 20px;
+    overflow: scroll;
+    border: 2px solid var(--coliv-dark-green);
+    border-radius: 5px;
+    height: 150px; /* TODO: find a better solution*/
+}
+
+.my-active-timeslots-section-table__entry {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;     
+}
+
+.my-active-timeslots-section-table__item {
+    width: 27%;
+    font-size: var(--item-font-large-screen);
+    text-align: center;
+    padding-left: 1%;
+    padding-right: 1%;
+}
+
+@media only screen and (max-width: 800px) {
+    .my-active-timeslots-section__header {
+        display: none;
+    }
+    
+    .my-active-timeslots-section-table {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: flex-start;
+    }
+
+    .my-active-timeslots-section-table__entry {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        width: 40%;
+        margin-bottom: 10px;        
+    }
+    
+    .my-active-timeslots-section-table__item {
+        width: 80%;
+        font-size: var(--item-font-mid-screen);
+        text-align: center;
+        padding-left: 10%;
+        padding-right: 10%;
+        margin-bottom: 10px;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .my-active-timeslots-section-table__entry {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 20px;        
+    }
+}

@@ -1,0 +1,49 @@
+#registered-laundry-assets-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 50%;
+    padding-left: 5%;
+    height: 100%;
+}
+
+.registered-laundry-assets-section-table {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    padding-top: 20px;
+    overflow: scroll;
+    border: 2px solid var(--coliv-dark-green);
+    border-radius: 5px;
+    height: 150px; /* TODO: find a better solution*/
+}
+
+.registered-laundry-assets-section__header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.registered-laundry-assets-section__title {
+    width: 50%;
+    font-size: var(--item-font-large-screen);
+    text-align: center;
+}
+
+.registered-laundry-assets-section__section-title {
+    width: 100%;
+    text-align: center;
+    font-size: var(--title-font-large-screen);
+}
+
+@media only screen and (max-width: 800px) {
+    #registered-laundry-assets-section {
+        width: 100%;
+        padding-left: 0%;
+    }
+}

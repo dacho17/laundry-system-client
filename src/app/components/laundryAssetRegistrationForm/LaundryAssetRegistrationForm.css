@@ -1,0 +1,36 @@
+.laundry-asset-registration-form-container {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    border: 2px solid var(--coliv-dark-green);
+    padding: 5%;
+}
+
+.laundry-asset-registration-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.laundry-asset-registration-form__row {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.laundry-asset-registration-form__short-input-field {
+    width: 50%;
+    align-self: center;
+}
+
+@media only screen and (max-width: 1000px) {
+    .laundry-asset-registration-form-container {
+        width: 90%;
+        border: none;
+    }
+}

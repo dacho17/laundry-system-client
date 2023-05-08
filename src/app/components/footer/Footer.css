@@ -1,0 +1,15 @@
+#footer {
+    height: 8%;
+    width: 94%;
+    padding: 2% 3% 2% 3%;
+    background-color: var(--coliv-dark-green);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.footer__item {
+    font-size: var(--title-font-large-screen);
+    color: var(--white);
+}

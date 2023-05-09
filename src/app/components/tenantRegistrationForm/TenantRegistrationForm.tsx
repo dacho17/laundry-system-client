@@ -7,7 +7,7 @@ import { getCurrentDate, isDifferenceAtLeast30Days, validateEmail, validateMobil
 import { setFormResMessage } from "../../../services/slices/AdminSlice";
 import CONSTANTS from "../../../assets/constants";
 import TenantRegistrationFormDto from "../../../dtos/TenantRegFormDto";
-import { createNewTenant, setResidenceTenants, setUpdatedTenant, updateTenant } from "../../../services/slices/ResidenceAdminSlice";
+import { createNewTenant, setUpdatedTenant, updateTenant } from "../../../services/slices/ResidenceAdminSlice";
 import GenFormInput from "../genFormInput/GenFormInput";
 import CtaButton from "../ctaButton/CtaButton";
 import './TenantRegistrationForm.css';
@@ -31,7 +31,7 @@ interface TenantRegistrationFormProps {
 
 export default function TenantRegistrationForm(props: TenantRegistrationFormProps) {
     const dispatch = useAppDispatch();
-    const { isFormLoading, formResMessage, updatedTenant, residenceTenants } = useAppSelector(state => state.residenceAdmin);
+    const { isFormLoading, formResMessage, updatedTenant } = useAppSelector(state => state.residenceAdmin);
 
     const [name, setName] = useState<FormInputState>({
         entered: '',
@@ -145,6 +145,13 @@ export default function TenantRegistrationForm(props: TenantRegistrationFormProp
                 ...isTouchedAndIsValidInit
             }
         });
+        setPassword((prevState) => {
+            return {
+                entered: '',
+                isTouched: false,
+                isValid: false
+            }
+        })
         setEmail((prevState) => {
             return {
                 entered: updTen?.email || '',

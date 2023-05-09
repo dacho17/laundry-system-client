@@ -42,7 +42,7 @@ export default function RegisteredLaundryAssetsSection() {
 
     return <div id='registered-laundry-assets-section'>
         <div className='registered-laundry-assets-section__section-title margin-bottom-2'>
-                {CONSTANTS.registeredResidenceAdminsLabel}
+                {CONSTANTS.registeredLaundryAssetsLabel}
             </div>
         <div className='registered-tenants-section__header margin-bottom-1'>
             <div className='registered-laundry-assets-section__title'>

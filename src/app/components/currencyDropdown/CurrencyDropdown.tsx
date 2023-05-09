@@ -22,8 +22,8 @@ export default function CurrencyDropdown(props: CurrencyDropdownProps) {
         props.setSelectedCurrency((prevState: any) => {
             const isCurrencyValid = CONSTANTS.supportedCurrencies.includes(currency);
 
-            return isCurrencyValid ? currency : prevState.selected
-        })
+            return isCurrencyValid ? currency : props.selectedCurrency
+        });
     }
 
     return (

@@ -2,10 +2,12 @@
     #accommodation-information {
         padding-left: 4%;
         padding-top: 10%;
+        margin-top: 50px;
     }
 
     #current-payment-information {
         padding-left: 4%;
         padding-top: 10%;
+        margin-top: 50px;
     }
 }

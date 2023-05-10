@@ -4,8 +4,9 @@ import CONSTANTS from '../../../assets/constants';
 import MyActiveTimeslots from '../../components/myActiveTimeslots/MyActiveTimeslots';
 import BookingSection from '../../components/bookingSection/BookingSection';
 import MyBookingsSection from '../../components/myBookingsSection/MyBookingsSection';
-import { useAppDispatch, useAppSelector } from '../../../services/store';
+import { useAppDispatch } from '../../../services/store';
 import { refreshUserLogin } from '../../../services/slices/AuthSlice';
+import { fetchMyActiveBookings } from '../../../services/slices/BookingSlice';
 
 export default function BookingPage() {
     const dispatch = useAppDispatch();
@@ -14,6 +15,7 @@ export default function BookingPage() {
 
     useEffect(() => {
         dispatch(refreshUserLogin());
+        dispatch(fetchMyActiveBookings());
     }, [dispatch]);
 
     function getActiveSection() {

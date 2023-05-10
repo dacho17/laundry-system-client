@@ -4,7 +4,7 @@ import CONSTANTS from '../../../assets/constants';
 import ActivityTable from '../../components/activityTable/ActivityTable';
 import AccountInfoSection from '../../components/accountInfoSection/AccountInfoSection';
 import AccountPaymentSection from '../../components/accountPaymentSection/AccountPaymentSection';
-import { useAppDispatch, useAppSelector } from '../../../services/store';
+import { useAppDispatch } from '../../../services/store';
 import { refreshUserLogin } from '../../../services/slices/AuthSlice';
 import { setFormResMessage } from '../../../services/slices/AccountSlice';
 

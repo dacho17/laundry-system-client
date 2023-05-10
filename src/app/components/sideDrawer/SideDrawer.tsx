@@ -40,7 +40,10 @@ export default function SideDrawer(props: SideDrawerProps) {
                         <div
                             className='side-drawer__link side-drawer__item'
                             key={link[1]}
-                            onClick={() => navigate(link[1])}
+                            onClick={() => {
+                                navigate(link[1]);
+                                props.toggleFn(false);
+                            }}
                         >{link[0]}</div>
                         <hr className='side-drawer__delimiter'/>
                     </>

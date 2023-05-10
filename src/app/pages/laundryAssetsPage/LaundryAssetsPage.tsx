@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../../services/store";
 import LaundryAssetRegistrationForm from "../../components/laundryAssetRegistrationForm/LaundryAssetRegistrationForm";
 import RegisteredLaundryAssetsSection from "../../components/registeredLaundryAssetsSection/RegisteredLaundryAssetsSection";
 import SectionNavigator from "../../components/sectionNavigator/SectionNavigator";
-import { setFormResMessage } from "../../../services/slices/ResidenceAdminSlice";
+import { setFormResMessage, setUpadatedLaundryAsset } from "../../../services/slices/ResidenceAdminSlice";
 
 export default function LaundryAssetsPage() {
     const dispatch = useAppDispatch();
@@ -21,6 +21,7 @@ export default function LaundryAssetsPage() {
 
     function getActiveSection() {
         dispatch(setFormResMessage(null));
+        dispatch(setUpadatedLaundryAsset(null));
         switch(activeSection) {
             case CONSTANTS.registerLaundryAssetIndex:
                 return <div className='section'>

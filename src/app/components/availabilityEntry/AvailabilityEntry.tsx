@@ -12,6 +12,7 @@ import BookingRequestDto from '../../../dtos/BookingRequestDto';
 import TimeslotAvailabilityDto from '../../../dtos/TimeslotAvailabilityDto';
 import { TimeslotAvailabilityStatus, getTimeslotAvailabilityStatus } from '../../../enums/TimeslotAvailabilityStatus';
 import { formatDate, formatTimeslot, getDateHourMinute } from '../../utils/elementHelper';
+import { fetchMyActiveBookings } from '../../../services/slices/BookingSlice';
 
 
 interface AvailabilityEntryProps {

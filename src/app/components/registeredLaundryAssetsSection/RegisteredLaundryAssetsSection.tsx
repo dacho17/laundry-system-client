@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../../services/store';
 import { fetchLaundryAssets, } from '../../../services/slices/ResidenceAdminSlice';
 import CONSTANTS from '../../../assets/constants';
 import LoadingComponent from '../loadingComponent/LoadingComponent';
-import RegisteredLaundryAssetsEntryEntry from './registeredLaundryAssetsEntry/RegisteredLaundryAssetsEntry';
+import RegisteredLaundryAssetsEntry from './registeredLaundryAssetsEntry/RegisteredLaundryAssetsEntry';
 import './RegisteredLaundryAssetsSection.css';
 
 export default function RegisteredLaundryAssetsSection() {
@@ -16,7 +16,7 @@ export default function RegisteredLaundryAssetsSection() {
 
     function getLaundryAssetsTable() {
         return residenceLaundryAssets?.map((laundryAsset, index) => {
-            return <RegisteredLaundryAssetsEntryEntry
+            return <RegisteredLaundryAssetsEntry
                 key={index}
                 laundryAsset={laundryAsset} />
         });

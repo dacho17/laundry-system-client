@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "../../../services/store";
 import { useEffect, useState } from "react";
 import FormInputState from "../../../interfaces/formInputState";
-import { setFormResMessage } from "../../../services/slices/ResidenceAdminSlice";
+import { setFormResMessage, setResetFormEntries } from "../../../services/slices/ResidenceAdminSlice";
 import CONSTANTS from "../../../assets/constants";
 import { createNewLaundryAsset, setUpadatedLaundryAsset, updateLaundryAsset,} from "../../../services/slices/ResidenceAdminSlice";
 import GenFormInput from "../genFormInput/GenFormInput";
@@ -19,7 +19,7 @@ interface LaundryAssetRegistrationFormProps {
 
 export default function LaundryAssetRegistrationForm(props: LaundryAssetRegistrationFormProps) {
     const dispatch = useAppDispatch();
-    const { isFormLoading, formResMessage, updatedLaundryAsset } = useAppSelector(state => state.residenceAdmin);
+    const { resetForm, isFormLoading, formResMessage, updatedLaundryAsset } = useAppSelector(state => state.residenceAdmin);
 
     const [assetId, setAssetId] = useState(0);
     const [name, setName] = useState<FormInputState>({
@@ -41,11 +41,12 @@ export default function LaundryAssetRegistrationForm(props: LaundryAssetRegistra
     const [assetType, setAssetType] = useState<AssetType>(AssetType.WASHER);
     const [isOperational, setIsOperational] = useState<boolean>(false);
 
-    console.log(JSON.stringify(`Current state status: assetType=${assetType}, currency=${currency}, isOperational=${isOperational}`));
-    // console.log(JSON.stringify(updatedLaundryAsset));
     const [isFormValid, setIsFormValid] = useState(false);
-    console.log(`Current resMessage=${JSON.stringify(formResMessage)}`);
     useEffect(() => {
+        if (resetForm) {
+            setFormStates(null);
+            dispatch(setResetFormEntries(false));
+        }
         if (updatedLaundryAsset !== null && props.formType === RegistrationFormType.REGISTER) {
             dispatch(setUpadatedLaundryAsset(null));
             setFormStates(null);
@@ -56,7 +57,7 @@ export default function LaundryAssetRegistrationForm(props: LaundryAssetRegistra
 
         const isFormCurValid = validateForm();
         setIsFormValid(isFormCurValid);
-    }, [validateForm, runningTime, servicePrice, name, assetType, currency, isOperational, updatedLaundryAsset, formResMessage]);
+    }, [validateForm, props.formType, resetForm, runningTime, servicePrice, name, assetType, currency, isOperational, updatedLaundryAsset, formResMessage]);
 
     function validateName(name: string): boolean {
         return name.trim().length >= 2;
@@ -143,12 +144,14 @@ export default function LaundryAssetRegistrationForm(props: LaundryAssetRegistra
             dispatch(createNewLaundryAsset(registrationForm)).then(res => {
                 if (res.meta.requestStatus === CONSTANTS.fulfilledLabel) {
                     setFormStates(null);
+                    setAssetId(0);
                 }
             });
         } else {
             dispatch(updateLaundryAsset(registrationForm)).then(res => {
                 if (res.meta.requestStatus === CONSTANTS.fulfilledLabel) {
                     setFormStates(null);
+                    setAssetId(0);
                 }
             });
         }

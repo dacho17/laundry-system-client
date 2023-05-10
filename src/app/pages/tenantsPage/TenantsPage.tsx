@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../../services/store";
 import RegisteredTenantsSection from "../../components/registeredTenantsSection/RegisteredTenantsSection";
 import SectionNavigator from "../../components/sectionNavigator/SectionNavigator";
 import TenantRegistrationForm from "../../components/tenantRegistrationForm/TenantRegistrationForm";
-import { setFormResMessage, setUpdatedTenant } from "../../../services/slices/ResidenceAdminSlice";
+import { setFormResMessage, setResetFormEntries } from "../../../services/slices/ResidenceAdminSlice";
 
 export default function TenantsPage() {
     const dispatch = useAppDispatch();
@@ -21,7 +21,7 @@ export default function TenantsPage() {
 
     function getActiveSection() {
         dispatch(setFormResMessage(null));
-        dispatch(setUpdatedTenant(null));
+        dispatch(setResetFormEntries(true));
         switch(activeSection) {
             case CONSTANTS.registerTenantSectionIndex:
                 return <div className='section'>

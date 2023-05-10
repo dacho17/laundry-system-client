@@ -4,7 +4,7 @@ import FormInputState from "../../../interfaces/formInputState";
 import { validateEmail, validateMobileNumberDUMMY } from "../../utils/elementHelper";
 import { setFormResMessage } from "../../../services/slices/AdminSlice";
 import CONSTANTS from "../../../assets/constants";
-import { createNewResidenceAdmin, setUpdatedResidenceAdmin, updateResidenceAdmin } from "../../../services/slices/ResidenceAdminSlice";
+import { createNewResidenceAdmin, setResetFormEntries, setUpdatedResidenceAdmin, updateResidenceAdmin } from "../../../services/slices/ResidenceAdminSlice";
 import GenFormInput from "../genFormInput/GenFormInput";
 import CtaButton from "../ctaButton/CtaButton";
 import { RegistrationFormType } from "../../../enums/RegistrationFormType";
@@ -18,7 +18,7 @@ interface ResidenceAdminRegistrationFormProps {
 
 export default function ResidenceAdminRegistrationForm(props: ResidenceAdminRegistrationFormProps) {
     const dispatch = useAppDispatch();
-    const { isFormLoading, formResMessage, updatedResidenceAdmin } = useAppSelector(state => state.residenceAdmin);
+    const { resetForm, isFormLoading, formResMessage, updatedResidenceAdmin } = useAppSelector(state => state.residenceAdmin);
 
     const [name, setName] = useState<FormInputState>({
         entered: '',
@@ -54,6 +54,10 @@ export default function ResidenceAdminRegistrationForm(props: ResidenceAdminRegi
 
     const [isFormValid, setIsFormValid] = useState(false);
     useEffect(() => {
+        if (resetForm) {
+            setFormStates(null);
+            dispatch(setResetFormEntries(false));
+        }
         if (updatedResidenceAdmin !== null && props.formType === RegistrationFormType.REGISTER) {
             dispatch(setUpdatedResidenceAdmin(null));
             setFormStates(null);
@@ -64,7 +68,7 @@ export default function ResidenceAdminRegistrationForm(props: ResidenceAdminRegi
 
         const isFormCurValid = validateForm();
         setIsFormValid(isFormCurValid);
-    }, [validateForm, username, password, name, surname, email, mobileNumber, updateResidenceAdmin, formResMessage]);
+    }, [validateForm, dispatch, resetForm, props.formType, username, password, name, surname, email, mobileNumber, updatedResidenceAdmin, formResMessage]);
 
 
     function validateUsername(username: string): boolean {

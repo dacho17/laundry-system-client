@@ -71,14 +71,11 @@ export default function AvailabilityEntry({availability}: AvailabilityEntryProps
     }
 
     function handlePurchaseAsset() {
-        console.log('purchase has been clicked');
-
         const purchaseRequest = {
             assetId: availability.activity.assetId,
             timeslot: availability.activity.chosenTimeslot
         } as BookingRequestDto;
 
-        console.log(`The object to be sent: ${JSON.stringify(purchaseRequest)}`);
         dispatch(purchaseLaundryAssetService(purchaseRequest)).then(res => {
             if (res.meta.requestStatus === CONSTANTS.fulfilledLabel) {
                 dispatch(fetchEarliestAvailabilities());

@@ -23,6 +23,8 @@ interface ResidenceAdminState {
     formResMessage: ResponseMessage | null;
     isFormLoading: boolean;
     isDataLoading: boolean;
+
+    resetForm: boolean;
 }
 
 const initialState: ResidenceAdminState = {
@@ -37,6 +39,8 @@ const initialState: ResidenceAdminState = {
     formResMessage: null,
     isFormLoading: false,
     isDataLoading: true,
+
+    resetForm: true,
 }
 
 export const createNewTenant = createAsyncThunk<any, TenantRegistrationForm>(
@@ -183,6 +187,9 @@ export const residenceAdminSlice = createSlice({
 
             state.activeSection = action.payload as number;
         },
+        setResetFormEntries: (state, action) => {
+            state.resetForm = action.payload as boolean;
+        },
         setUpdatedTenant: (state, action) => {
             state.updatedTenant = action.payload as Tenant | null;
         },
@@ -209,10 +216,14 @@ export const residenceAdminSlice = createSlice({
         },
     },
     extraReducers: (builder => {
-        builder.addMatcher(isAnyOf(createNewLaundryAsset.fulfilled, updateLaundryAsset.fulfilled,
+        builder.addMatcher(isAnyOf(createNewLaundryAsset.fulfilled,
             createNewResidenceAdmin.fulfilled, updateResidenceAdmin.fulfilled,
             createNewTenant.fulfilled, updateTenant.fulfilled), (state, action) => {
                 state.isFormLoading = false;
+        });
+        builder.addMatcher(isAnyOf(updateLaundryAsset.fulfilled), (state, action) => {
+            state.updatedLaundryAsset = null;
+            state.isFormLoading = false;
         });
         builder.addMatcher(isAnyOf(createNewLaundryAsset.rejected, updateLaundryAsset.rejected,
             createNewResidenceAdmin.rejected, updateResidenceAdmin.rejected,
@@ -249,5 +260,5 @@ export const residenceAdminSlice = createSlice({
     })
 });
 
-export const { resetResMessages, setUpdatedTenant, setUpdatedResidenceAdmin, setUpadatedLaundryAsset,
+export const { setResetFormEntries, resetResMessages, setUpdatedTenant, setUpdatedResidenceAdmin, setUpadatedLaundryAsset,
     setFormResMessage, setResidenceTenants, setResidenceAdmins, setResidenceLaundryAssets } = residenceAdminSlice.actions;

@@ -26,7 +26,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "node server/server.js",
+    "prod-start": "node server/server.js",
+    "start": "react-scripts start",
     "build": "react-scripts --optimize_for_size --max_old_space_size=768 --gc_interval=100 build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

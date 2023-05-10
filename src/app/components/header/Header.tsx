@@ -13,7 +13,6 @@ export default function Header() {
     const dispatch = useAppDispatch();
     const { user } = useAppSelector(state => state.auth);
 
-    console.log(`User read in the header is ${JSON.stringify(user)}`)
     useEffect(() => {
         if (!user || Object.keys(user).length === 0) {
             dispatch(refreshUserLogin());

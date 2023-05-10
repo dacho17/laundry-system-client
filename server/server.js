@@ -3,7 +3,6 @@ const express = require('express');
 const app = express();
 
 const publicPath = path.join(__dirname, '../build'); app.use(express.static(publicPath));
-console.log(publicPath);
 app.use(express.static(publicPath));
 
 app.use((req, res, next) => {

@@ -27,7 +27,6 @@ export default function LoginForm() {
     });
     const [isFormValid, setIsFormValid] = useState(false);
 
-    console.log(`User read in the login form ${JSON.stringify(user)}`);
     useEffect(() => {
         const isFormCurValid = validateUsername(username.entered) && validatePassword(password.entered);
         setIsFormValid(isFormCurValid);

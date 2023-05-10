@@ -7,7 +7,7 @@ import { getCurrentDate, isDifferenceAtLeast30Days, validateEmail, validateMobil
 import { setFormResMessage } from "../../../services/slices/AdminSlice";
 import CONSTANTS from "../../../assets/constants";
 import TenantRegistrationFormDto from "../../../dtos/TenantRegFormDto";
-import { createNewTenant, setUpdatedTenant, updateTenant } from "../../../services/slices/ResidenceAdminSlice";
+import { createNewTenant, setResetFormEntries, setUpdatedTenant, updateTenant } from "../../../services/slices/ResidenceAdminSlice";
 import GenFormInput from "../genFormInput/GenFormInput";
 import CtaButton from "../ctaButton/CtaButton";
 import './TenantRegistrationForm.css';
@@ -31,7 +31,7 @@ interface TenantRegistrationFormProps {
 
 export default function TenantRegistrationForm(props: TenantRegistrationFormProps) {
     const dispatch = useAppDispatch();
-    const { isFormLoading, formResMessage, updatedTenant } = useAppSelector(state => state.residenceAdmin);
+    const { resetForm, isFormLoading, formResMessage, updatedTenant } = useAppSelector(state => state.residenceAdmin);
 
     const [name, setName] = useState<FormInputState>({
         entered: '',
@@ -77,6 +77,10 @@ export default function TenantRegistrationForm(props: TenantRegistrationFormProp
 
     const [isFormValid, setIsFormValid] = useState(false);
     useEffect(() => {
+        if (resetForm) {
+            setFormStates(null);
+            dispatch(setResetFormEntries(false));
+        }
         if (updatedTenant !== null && props.formType === RegistrationFormType.REGISTER) {
             dispatch(setUpdatedTenant(null));
             setFormStates(null)
@@ -86,7 +90,7 @@ export default function TenantRegistrationForm(props: TenantRegistrationFormProp
         }
         const isFormCurValid = validateForm();
         setIsFormValid(isFormCurValid);
-    }, [validateForm, username, password, name, surname, email, mobileNumber, tenancyFrom, tenancyTo, updatedTenant, formResMessage]);
+    }, [validateForm, resetForm, username, password, name, surname, email, mobileNumber, tenancyFrom, tenancyTo, updatedTenant, formResMessage]);
 
 
     function validateUsername(username: string): boolean {
@@ -122,6 +126,9 @@ export default function TenantRegistrationForm(props: TenantRegistrationFormProp
     }
 
     function setFormStates(updTen: Tenant | null) {
+        if (RegistrationFormType.REGISTER === props.formType) {
+            updTen = null;
+        }
         const isTouchedAndIsValidInit = {
             isTouched: updTen !== null ? true : false,
             isValid: updTen !== null ? true : false

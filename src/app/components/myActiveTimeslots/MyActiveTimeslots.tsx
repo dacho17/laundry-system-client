@@ -59,15 +59,7 @@ export default function MyActiveTimeslots() {
             timeslot: getDateWithRoundedHour(new Date(purchase.fromTimeslot), getCurrentDate().getHours()).getTime()
         } as BookingRequestDto;
 
-        console.log(`The object to be sent: ${JSON.stringify(purchaseRequest)}`);
-        dispatch(purchaseLaundryAssetService(purchaseRequest)).then(res => {
-            console.log('log after dispatch has been called');
-            if (res.meta.requestStatus === CONSTANTS.fulfilledLabel) {
-                console.log('fulfilled status received');
-            } else {
-                console.log('status other than fulfilled has been received');
-            }
-        });
+        dispatch(purchaseLaundryAssetService(purchaseRequest));
     }
 
     function handlePopupClose() {
@@ -143,7 +135,6 @@ export default function MyActiveTimeslots() {
     }
 
     function getActiveTimeslotsTableContent(listOfBookings: ReservedBooking[] | undefined, isActionable: boolean, activeBookingType: ActiveBookingType) {
-        console.log(`in getactiveTimeslotsTableContent ${JSON.stringify(listOfBookings)}`)
         if (tableErrorMsg !== null) {
             return <div className='message-container-centered'>{tableErrorMsg}</div>
         } else if (isTableLoading || listOfBookings == null) {

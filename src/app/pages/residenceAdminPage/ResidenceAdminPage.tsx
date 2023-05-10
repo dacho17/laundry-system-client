@@ -6,7 +6,7 @@ import ResidenceAdminRegistrationForm from '../../components/residenceAdminRegis
 import RegisteredResidenceAdminsSection from '../../components/registeredResidenceAdminsSection/RegisteredResidenceAdminsSection';
 import { useEffect, useState } from 'react';
 import { refreshUserLogin } from '../../../services/slices/AuthSlice';
-import { setFormResMessage, setUpdatedResidenceAdmin } from '../../../services/slices/ResidenceAdminSlice';
+import { setFormResMessage, setResetFormEntries } from '../../../services/slices/ResidenceAdminSlice';
 
 export default function ResidenceAdminPage() {
     const dispatch = useAppDispatch();
@@ -21,7 +21,7 @@ export default function ResidenceAdminPage() {
 
     function getActiveSection() {
         dispatch(setFormResMessage(null));
-        dispatch(setUpdatedResidenceAdmin(null));
+        dispatch(setResetFormEntries(true));
         switch(activeSection) {
             case CONSTANTS.registerResidenceAdminSectionIndex:
                 return <div className='section'>

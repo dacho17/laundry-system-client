@@ -19,7 +19,6 @@ export default function RegisteredTenantsEntry(props: RegisteredTenantsEntryProp
 
     function handleUpdateTenant() {
         dispatch(setUpdatedTenant(props.tenant));
-        console.log('tenant has been updated')
     }
 
     return <button

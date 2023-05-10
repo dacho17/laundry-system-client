@@ -9,7 +9,7 @@ interface RegisteredLaundryAssetsEntryProps {
     laundryAsset: LaundryAssetDto;
 }
 
-export default function RegisteredLaundryAssetsEntryEntry(props: RegisteredLaundryAssetsEntryProps) {
+export default function RegisteredLaundryAssetsEntry(props: RegisteredLaundryAssetsEntryProps) {
     const name = props.laundryAsset.name;
     const assetType = props.laundryAsset.assetType.toString() === AssetType[AssetType.WASHER] ? CONSTANTS.washerLabel : CONSTANTS.drierLabel;
 

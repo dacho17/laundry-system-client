@@ -27,7 +27,6 @@ export default function BookingTable(props: BookingTableProps) {
                 assetId: props.asset.id,
                 timeslot: +selectedDate
             } as BookingRequestDto;
-            console.log(`Date being dispatched ${reqParams.timeslot}`);
             dispatch(fetchLaundryAssetDailyBookings(reqParams));
         }
     }, [selectedDate, props.asset, dispatch]);

@@ -38,6 +38,11 @@ export function getCurrentDate(): Date {
     return new Date(Date.now());
 }
 
+export function getCurrentUTCms(): number {
+    const curDate = getCurrentDate();
+    return curDate.getUTCMilliseconds();
+}
+
 export function getDateWithRoundedHour(date: Date, hour: number): Date {
     const newDate = new Date(date);
     newDate.setMilliseconds(0);

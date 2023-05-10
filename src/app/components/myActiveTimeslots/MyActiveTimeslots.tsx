@@ -143,7 +143,7 @@ export default function MyActiveTimeslots() {
     }
 
     function getActiveTimeslotsTableContent(listOfBookings: ReservedBooking[] | undefined, isActionable: boolean, activeBookingType: ActiveBookingType) {
-        console.log(`in getactiveTimeslotsTableContent ${listOfBookings}`)
+        console.log(`in getactiveTimeslotsTableContent ${JSON.stringify(listOfBookings)}`)
         if (tableErrorMsg !== null) {
             return <div className='message-container-centered'>{tableErrorMsg}</div>
         } else if (isTableLoading || listOfBookings == null) {
@@ -167,8 +167,6 @@ export default function MyActiveTimeslots() {
         }
     }
 
-    console.log(JSON.stringify(myActiveBookings?.bookingsToPurchase));
-    console.log(JSON.stringify(myActiveBookings?.purchasedBookings));
     return (
         <div id='my-active-timeslots-section'>
             <div className='my-active-timeslots-section__header margin-bottom-1'>

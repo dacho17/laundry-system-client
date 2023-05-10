@@ -115,6 +115,13 @@ export default function ResidenceAdminRegistrationForm(props: ResidenceAdminRegi
                 ...isTouchedAndIsValidInit
             }
         });
+        setPassword((prevState) => {
+            return {
+                entered: '',
+                isTouched: false,
+                isValid: false
+            }
+        });
         setMobileNumber((prevState) => {
             return {
                 entered: updResAdmin?.mobileNumber || '',
@@ -140,9 +147,19 @@ export default function ResidenceAdminRegistrationForm(props: ResidenceAdminRegi
         } as ResidenceAdminRegFormDto;
 
         if (props.formType === RegistrationFormType.REGISTER) {
-            dispatch(createNewResidenceAdmin(registrationForm));
+            dispatch(createNewResidenceAdmin(registrationForm)).then(res => {
+                if (res.meta.requestStatus === CONSTANTS.fulfilledLabel) {
+                    dispatch(setUpdatedResidenceAdmin(null));
+                    setFormStates(null);
+                }
+            });
         } else {
-            dispatch(updateResidenceAdmin(registrationForm));
+            dispatch(updateResidenceAdmin(registrationForm)).then(res => {
+                if (res.meta.requestStatus === CONSTANTS.fulfilledLabel) {
+                    dispatch(setUpdatedResidenceAdmin(null));
+                    setFormStates(null);
+                }
+            });
         }
     }
 

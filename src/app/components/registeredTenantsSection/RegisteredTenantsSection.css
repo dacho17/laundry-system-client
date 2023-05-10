@@ -30,7 +30,7 @@
 }
 
 .registered-tenants-section__title {
-    width: 33%;
+    width: 50%;
     font-size: var(--item-font-large-screen);
     text-align: center;
 }
@@ -45,5 +45,6 @@
     #registered-tenants-section {
         width: 100%;
         padding-left: 0%;
+        margin-top: 50px;
     }
 }

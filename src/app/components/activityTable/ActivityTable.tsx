@@ -90,9 +90,10 @@ export default function ActivityTable() {
     return (
         <div id='activity-table-container'>
             <div id='activity-table-header'>
-                {headerLabels.map(label => {
+                {headerLabels.map((label, index) => {
                     return <div
                         className='activity-table__header-item'
+                        key={`activity-table__header-item-${index}`}
                     >{label}</div>
                 })}
             </div>

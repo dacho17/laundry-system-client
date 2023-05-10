@@ -25,6 +25,9 @@ export default function AvailabilityPage() {
         } else if (earliestAvailabilities == null) {
             return <div className='message-container-centered'>{CONSTANTS.theDataCannotBeFetchedMomentarily}</div>;
         } else {
+            if (earliestAvailabilities.length === 0) {
+                return <div className='message-container-centered'>{CONSTANTS.noRegisteredLaundryAssetsLabel}</div>;
+            }
             return <>
                 {earliestAvailabilities.map((availability, index) => {
                     return <AvailabilityEntry
@@ -36,7 +39,7 @@ export default function AvailabilityPage() {
         }
     }
 
-    const tableStyleAdaptation = earliestAvailabilities ? {} : {paddingTop: 0};
+    const tableStyleAdaptation = earliestAvailabilities === null || earliestAvailabilities.length === 0 ? {paddingTop: 0} : {};
     return (
         <div className='page-content'>
             <div id='availability-section'>

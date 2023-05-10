@@ -75,7 +75,6 @@ export default function TenantRegistrationForm(props: TenantRegistrationFormProp
         isTouched: false
     });
 
-    console.log('comp rere')
     const [isFormValid, setIsFormValid] = useState(false);
     useEffect(() => {
         if (updatedTenant !== null && props.formType === RegistrationFormType.REGISTER) {
@@ -151,7 +150,7 @@ export default function TenantRegistrationForm(props: TenantRegistrationFormProp
                 isTouched: false,
                 isValid: false
             }
-        })
+        });
         setEmail((prevState) => {
             return {
                 entered: updTen?.email || '',
@@ -197,16 +196,25 @@ export default function TenantRegistrationForm(props: TenantRegistrationFormProp
         } as TenantRegistrationFormDto;
 
         if (props.formType === RegistrationFormType.REGISTER) {
-            dispatch(createNewTenant(registrationForm));
+            dispatch(createNewTenant(registrationForm)).then(res => {
+                if (res.meta.requestStatus === CONSTANTS.fulfilledLabel) {
+                    dispatch(setUpdatedTenant(null));
+                    setFormStates(null);
+                }
+            });
         } else {
-            dispatch(updateTenant(registrationForm));
+            dispatch(updateTenant(registrationForm)).then(res => {
+                if (res.meta.requestStatus === CONSTANTS.fulfilledLabel) {
+                    dispatch(setUpdatedTenant(null));
+                    setFormStates(null);
+                }
+            });;
         }
     }
 
     const title = RegistrationFormType.REGISTER === props.formType ? CONSTANTS.registerTenantLabel : CONSTANTS.updateTenantLabel;
     const buttonLabel = RegistrationFormType.REGISTER === props.formType ? CONSTANTS.registerLabel : CONSTANTS.updateLabel;
     
-    console.log(`${name.entered}`);
     return <div className='tenant-registration-form-container'>
         <div className='form__title margin-bottom-3'>{title}</div>
         <form className='tenant-registration-form'>

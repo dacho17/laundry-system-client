@@ -15,7 +15,7 @@ export default function BookingTableDatepicker(props: BookingTableDatePickerProp
     function changeDate(increment: number) {
         let newDate = getDateWithRoundedHour(getOffsetDate(props.selectedDate, increment), CONSTANTS.firstHourOfDay);
         if (formatDate(getDateWithRoundedHour(newDate, CONSTANTS.firstHourOfDay)) === formatDate(getDateWithRoundedHour(today, CONSTANTS.firstHourOfDay))) {
-            newDate.setHours(today.getHours() + 1);
+            newDate.setHours(today.getHours());
         }
 
         props.setSelectedDate(newDate);

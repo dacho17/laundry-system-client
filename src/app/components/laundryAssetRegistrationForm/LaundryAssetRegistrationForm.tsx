@@ -140,9 +140,17 @@ export default function LaundryAssetRegistrationForm(props: LaundryAssetRegistra
         } as LaundryAssetRegFormDto;
 
         if (props.formType === RegistrationFormType.REGISTER) {
-            dispatch(createNewLaundryAsset(registrationForm));
+            dispatch(createNewLaundryAsset(registrationForm)).then(res => {
+                if (res.meta.requestStatus === CONSTANTS.fulfilledLabel) {
+                    setFormStates(null);
+                }
+            });
         } else {
-            dispatch(updateLaundryAsset(registrationForm));
+            dispatch(updateLaundryAsset(registrationForm)).then(res => {
+                if (res.meta.requestStatus === CONSTANTS.fulfilledLabel) {
+                    setFormStates(null);
+                }
+            });
         }
     }
  
@@ -176,7 +184,7 @@ export default function LaundryAssetRegistrationForm(props: LaundryAssetRegistra
                 <input type="checkbox" id="is-operational-checkbox" name="is-operational"
                     checked={isOperational}
                     onChange={() => setIsOperational(!isOperational)} />
-                <label for-html="is-operational-checkbox">{CONSTANTS.isOperationalLabel}</label>
+                <label htmlFor="is-operational-checkbox">{CONSTANTS.isOperationalLabel}</label>
             </div>
             
             <div className="laundry-asset-registration-form__row">

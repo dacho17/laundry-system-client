@@ -67,3 +67,9 @@
         display: none;
     }
 }
+
+@media (max-width: 450px) {
+    .side-drawer {
+        width: 70%;
+    }
+}

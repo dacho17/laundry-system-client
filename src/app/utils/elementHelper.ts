@@ -2,8 +2,20 @@ import { addDays } from 'date-fns';
 import CONSTANTS from "../../assets/constants";
 
 export function getTenantHeaderLinks(): string[][] {
-    const headerLinkLabels = CONSTANTS.headerLinkLabels;
+    const headerLinkLabels = CONSTANTS.headerTenantLinkLabels;
     const headerLinks = [CONSTANTS.availabilityRoute, CONSTANTS.bookingRoute, CONSTANTS.accountRoute];
+
+    let res = [];
+    for (let i = 0; i < headerLinks.length; i++) {
+        res.push([headerLinkLabels[i], headerLinks[i]]);
+    }
+
+    return res;
+}
+
+export function getResidenceAdminHeaderLinks(): string[][] {
+    const headerLinkLabels = CONSTANTS.headerResidenceAdminLinkLabels;
+    const headerLinks = [CONSTANTS.residenceAdminRoute, CONSTANTS.tenantsRoute, CONSTANTS.laundryAssetsRoute];
 
     let res = [];
     for (let i = 0; i < headerLinks.length; i++) {

@@ -3,14 +3,15 @@ import GenFormInput from '../genFormInput/GenFormInput';
 import CtaButton from '../ctaButton/CtaButton';
 import CONSTANTS from '../../../assets/constants';
 import FormInputState from '../../../interfaces/formInputState';
-import { useAppDispatch } from '../../../services/store';
+import { useAppDispatch, useAppSelector } from '../../../services/store';
 import UpdatePaymentCardForm from '../../../dtos/UpdatePaymentCardForm';
-import { updatePaymentCard } from '../../../services/slices/AccountSlice';
+import { setFormResMessage, updatePaymentCard } from '../../../services/slices/AccountSlice';
 import './RegisterPaymentForm.css';
 import ResponseMessage from '../../../interfaces/responseMessage';
 
 export default function RegisterPaymentForm() {
     const dispatch = useAppDispatch();
+    const { formResMsg, isFormLoading } = useAppSelector(state => state.account);
 
     const [cardNumber, setCardNumber] = useState<FormInputState>({
         entered: '',
@@ -33,8 +34,8 @@ export default function RegisterPaymentForm() {
         isTouched: false,
     });
     
-    const [isLoading, setIsLoading] = useState(false);
-    const [resMsg, setResMsg] = useState<ResponseMessage | null>(null);
+    // const [isLoading, setIsLoading] = useState(false);
+    // const [resMsg, setResMsg] = useState<ResponseMessage | null>(null);
 
     function cardNumberValidation(cardNumber: string) {
         const isLengthValid = cardNumber.trim().length === 16;
@@ -62,17 +63,11 @@ export default function RegisterPaymentForm() {
     }
 
     function tryToSendForm() {
-        setIsLoading(true);
-        setResMsg(null);
-
         if (!cardNumberValidation(cardNumber.entered) || !cardHolderValidation(cardHolder.entered)
             || !cardExpiryDateValidation(cardExpiryDate.entered) || !cardCvvValidation(cardCVV.entered)) {
-            setResMsg({message: CONSTANTS.formIsInvaildMsg, isError: true});
-            setIsLoading(false);
+            dispatch(setFormResMessage({message: CONSTANTS.registerPaymentFormIsInvalid, isError: true}));
             return;
         }
-
-        console.log('passed validation');
         
         const paymentCardForm = {
             cardHolder: cardHolder.entered.trim(),
@@ -118,9 +113,9 @@ export default function RegisterPaymentForm() {
             <CtaButton
                 label={CONSTANTS.registerCardLabel}
                 actionFn={() => tryToSendForm()}
-                isDisabled={isLoading}/>
-            {resMsg && <div className={`${resMsg.isError ? 'error-msg' : 'succ-msg'} margin-top-2`}>
-                {resMsg.message}
+                isDisabled={isFormLoading}/>
+            {formResMsg && <div className={`${formResMsg.isError ? 'error-msg' : 'succ-msg'} margin-top-2`}>
+                {formResMsg.message}
             </div>}
         </form>
     </div>

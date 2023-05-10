@@ -174,7 +174,7 @@ export const residenceAdminSlice = createSlice({
     name: "resAdmin",
     initialState,
     reducers: {
-        setActiveSection: (state, action) => {
+        resetResMessages: (state, action) => {
             state.formResMessage = null;
             state.fetchResMessage = null;
             // state.updatedTenant = null;
@@ -249,5 +249,5 @@ export const residenceAdminSlice = createSlice({
     })
 });
 
-export const { setActiveSection, setUpdatedTenant, setUpdatedResidenceAdmin, setUpadatedLaundryAsset,
+export const { resetResMessages, setUpdatedTenant, setUpdatedResidenceAdmin, setUpadatedLaundryAsset,
     setFormResMessage, setResidenceTenants, setResidenceAdmins, setResidenceLaundryAssets } = residenceAdminSlice.actions;

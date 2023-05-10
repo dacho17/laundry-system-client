@@ -19,18 +19,22 @@ interface AvailabilityEntryProps {
 }
 
 function getLabels(availability: TimeslotAvailabilityDto) {
+    if (!availability.isAssetOperational) {
+        return [CONSTANTS.notInUseLabel, CONSTANTS.currentlyNotOperationalLabel]
+    }
+
     const chosenTs = new Date(availability.activity.chosenTimeslot);
     switch (getTimeslotAvailabilityStatus(availability.status)) {
         case TimeslotAvailabilityStatus.FREE_TO_USE:
             return [CONSTANTS.useLabel, CONSTANTS.availableImmediatelyLabel];
         case TimeslotAvailabilityStatus.RUNNING_BY_USER:
             const endTime = new Date(availability.runningTimeEnd!);
-            return [CONSTANTS.usingLabel, `${CONSTANTS.machineFinishesAtLabel} ${formatDate(endTime)} ${getDateHourMinute(new Date(endTime))}`];
+            return [CONSTANTS.usingLabel, `${CONSTANTS.assetFinishesAtLabel} ${formatDate(endTime)} ${getDateHourMinute(new Date(endTime))}`];
         case TimeslotAvailabilityStatus.FREE_TO_USE_BOOKED:
             const bookingSlotEnd = new Date(availability.bookingSlotEnd!);
-            return [CONSTANTS.useLabel, `${CONSTANTS.youBookedThisMachineUntilLabel} ${formatDate(chosenTs)} ${getDateHourMinute(bookingSlotEnd)}`];
+            return [CONSTANTS.useLabel, `${CONSTANTS.youBookedThisAssetUntilLabel} ${formatDate(chosenTs)} ${getDateHourMinute(bookingSlotEnd)}`];
         case TimeslotAvailabilityStatus.BOOKED_BY_USER:
-            return [CONSTANTS.bookLabel, `${CONSTANTS.youBookedThisMachineOnLabel} ${formatDate(chosenTs)} ${getDateHourMinute(chosenTs)}`];
+            return [CONSTANTS.bookLabel, `${CONSTANTS.youBookedThisAssetOnLabel} ${formatDate(chosenTs)} ${getDateHourMinute(chosenTs)}`];
         case TimeslotAvailabilityStatus.AVAILABLE_FROM:
             return [CONSTANTS.bookLabel, `${CONSTANTS.availableOnLabel} ${formatDate(chosenTs)} ${formatTimeslot(chosenTs)}`];
     }
@@ -42,8 +46,8 @@ export default function AvailabilityEntry({availability}: AvailabilityEntryProps
     const { isPopupLoading, popupResMsg } = useAppSelector(state => state.availability);
     const navigate = useNavigate();
 
-    const isAvailable = TimeslotAvailabilityStatus.FREE_TO_USE === getTimeslotAvailabilityStatus(availability.status);
-    const [buttonLabel, note] = getLabels(availability);
+    const isAvailable = [TimeslotAvailabilityStatus.FREE_TO_USE, TimeslotAvailabilityStatus.FREE_TO_USE_BOOKED].includes(getTimeslotAvailabilityStatus(availability.status));
+    let [buttonLabel, note] = getLabels(availability);
 
     function handleButtonClick(status: TimeslotAvailabilityStatus) {
         switch (status) {
@@ -104,7 +108,7 @@ export default function AvailabilityEntry({availability}: AvailabilityEntryProps
     return (
         <div className='availability-entry'>
             <div className='availability-entry__container'>
-                <AvailabilityEntryIcon isAssetAvailable={isAvailable} />    
+                <AvailabilityEntryIcon isAssetAvailable={isAvailable && availability.isAssetOperational} />
             </div>
             <div className='availability-entry__item availability-entry__text'>
                 {availability.activity.assetName}
@@ -117,7 +121,7 @@ export default function AvailabilityEntry({availability}: AvailabilityEntryProps
                     <CtaButton
                         label={buttonLabel}
                         actionFn={() => handleButtonClick(getTimeslotAvailabilityStatus(availability.status))}
-                        isDisabled={false} 
+                        isDisabled={!availability.isAssetOperational}
                     />
                     {showPopup(availability.activity)}
                     </>

@@ -29,7 +29,6 @@ export const fetchEarliestAvailabilities = createAsyncThunk<any>(
         try {
             const res: AxiosResponse = await backendAPI.getLaundryAssetsEarliestAvailabilities();
             const earliestAvailabilities: TimeslotAvailabilityDto[] = res.data.data!;
-            console.log(JSON.stringify(earliestAvailabilities));
             thunkAPI.dispatch(setEarliestAvailabilities(earliestAvailabilities));
         } catch (err: any) {
             const errorMsg = err.data.message;
@@ -48,7 +47,6 @@ export const purchaseLaundryAssetService = createAsyncThunk<any, BookingRequestD
                 message: res.data.message!,
                 isError: false
             } as ResponseMessage;
-            console.log(JSON.stringify(resMessage));
             thunkAPI.dispatch(setPopupResMessage(resMessage));
             thunkAPI.dispatch(fetchEarliestAvailabilities());
         } catch (err: any) {

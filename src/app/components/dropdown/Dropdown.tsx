@@ -4,8 +4,6 @@ import { RiArrowDropDownLine, RiArrowDropUpLine } from 'react-icons/ri';
 import CONSTANTS from '../../../assets/constants';
 import './Dropdown.css';
 
-const DEFAULT_VALUE = 'Select Machine';
-
 interface DropdownProps {
     items: any[];
     currentlySelectedItem: number;
@@ -17,7 +15,7 @@ export default function Dropdown(props: DropdownProps) {
 
     function getSelectedValue() {
         if (props.currentlySelectedItem === CONSTANTS.defaultDropdownValue) {
-            return DEFAULT_VALUE;
+            return CONSTANTS.selectAssetLabel;
         } else return props.items[props.currentlySelectedItem].name;
     }
 

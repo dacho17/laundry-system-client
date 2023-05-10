@@ -128,7 +128,6 @@ export const accountSlice = createSlice({
             const { userInfo, residenceInfo } = action.payload as AccountInformationDto;
             state.userInformation = userInfo;
             state.residenceInformation = residenceInfo;
-            console.log(`${JSON.stringify(userInfo)}, ${JSON.stringify(residenceInfo)}`);
         },
         setUserInfoForm: (state, action) => {
             state.userInformation = action.payload as UpdateUserInfoForm;

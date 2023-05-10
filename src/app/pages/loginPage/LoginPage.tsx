@@ -12,7 +12,6 @@ export default function LoginPage() {
     const { user } = useAppSelector(state => state.auth);
     const navigate = useNavigate();
 
-    console.log(`User read on the login page ${JSON.stringify(user)}`);
     if (user) {
         if (user.role === UserRole.TENANT) {
             navigate(CONSTANTS.availabilityRoute);

@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import CONSTANTS from '../../../assets/constants';
-import { getTenantHeaderLinks } from '../../utils/elementHelper';
+import { getResidenceAdminHeaderLinks, getTenantHeaderLinks } from '../../utils/elementHelper';
 import './SideDrawer.css';
 import { useAppDispatch, useAppSelector } from '../../../services/store';
 import { logOut, refreshUserLogin } from '../../../services/slices/AuthSlice';
@@ -17,7 +17,6 @@ export default function SideDrawer(props: SideDrawerProps) {
     const { user } = useAppSelector(state => state.auth); 
     const navigate = useNavigate();
 
-    console.log(`User read in the side drawer is ${JSON.stringify(user)}`)
     useEffect(() => {
         if (!user || Object.keys(user).length === 0) {
             dispatch(refreshUserLogin());
@@ -53,10 +52,26 @@ export default function SideDrawer(props: SideDrawerProps) {
                 <hr className='side-drawer__delimiter'/>
             </>
         } else if (user!.role === UserRole.RESIDENCE_ADMIN) {
-            return <div
-                className='side-drawer__link side-drawer__item'
-                onClick={() => handleLogout()}
-            >{CONSTANTS.logoutLabel}</div>
+            return <>
+                {getResidenceAdminHeaderLinks().map(link => {
+                    return <>
+                        <div
+                            className='side-drawer__link side-drawer__item'
+                            key={link[1]}
+                            onClick={() => {
+                                navigate(link[1]);
+                                props.toggleFn(false);
+                            }}
+                        >{link[0]}</div>
+                        <hr className='side-drawer__delimiter'/>
+                    </>
+                })}
+                <div
+                    className='side-drawer__link side-drawer__item'
+                    onClick={() => handleLogout()}
+                >{CONSTANTS.logoutLabel}</div>
+                <hr className='side-drawer__delimiter'/>
+            </>
         }
     }
 

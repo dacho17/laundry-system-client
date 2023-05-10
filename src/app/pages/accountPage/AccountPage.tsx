@@ -6,6 +6,7 @@ import AccountInfoSection from '../../components/accountInfoSection/AccountInfoS
 import AccountPaymentSection from '../../components/accountPaymentSection/AccountPaymentSection';
 import { useAppDispatch, useAppSelector } from '../../../services/store';
 import { refreshUserLogin } from '../../../services/slices/AuthSlice';
+import { setFormResMessage } from '../../../services/slices/AccountSlice';
 
 export default function AccountPage() {
     const dispatch = useAppDispatch();
@@ -17,6 +18,7 @@ export default function AccountPage() {
     const [activeSection, setActiveSection] = useState(0);
 
     function getActiveSection() {
+        dispatch(setFormResMessage(null));
         switch(activeSection) {
             case 0:
                 return <div className='section'>

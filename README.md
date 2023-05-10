@@ -17,13 +17,26 @@ FE:
         => purchase is connected to the first booking slot
         => Account tab looks good.
         => My booking tab looks good.
-        => Activity tab looks good. NOTE/TODO: Retest this as it reflects the logic of the system!
-    [DOING!]8. Deploy (dockerize)
-    [DOING!]9. Polish the app and make it presentable
+        => Activity tab looks good. NOTE: Retest this as it reflects the logic of the system!
+    +8. Deploy
+        - NOTE/TODO: establish CI/CD pipeline for practice, using dynamic values and good practices a good architect should use
+    +9. Initial bugfixing and checks
         - After the above, recheck the behavior of the application
-        - After determined fit, see how it can be deployed (& dockerized maybe)
+            => Bugs in registerLaundryAsset form:
+                [FIXED]1. Currency dropdown does not work. After changing the currency value and updating the form, no update is made
+                [FIXED]2. isOperational flag does not work. -||-
+                [FIXED]3. selectAssetType radiobutton group does not work
+                    - asset type cannot be changed. The update form is made not to show this option of the form
+            +=> proceed with testing and fixing these locally
+    10. Go through the entire app one more time. Check by check.
         - error handling and display
-    10. mobile number support
+        - mobile and desktop
+        - logic is sound
+    11. Polish the app and make it presentable
+        - After determined fit, deploy it with the current setup
+        - mobile and desktop
+    12. Improvements: Prioritize and decide what is to be done
+    13. Presentation
 
 BE:
     0. Error handling
@@ -31,12 +44,13 @@ BE:
     2. set up openAPI/swagger
 
 Improvements:
-    - ActivityHistory - sort by createdDate, and then by timeslot chosen
     - on refresh lags
-    - create an additional table to which employees will be connected with residences 'employment' table
+    - admin page - laundry assets statistics (data insights)
     - forgot Password functionality
-    - Splitting admin page into 3? With each having 2 tabs
     - stripe integration...
+    - mobile number support
+    - create an additional table to which employees will be connected with residences 'employment' table
+    - dockerize
 
 # Getting Started with Create React App
 

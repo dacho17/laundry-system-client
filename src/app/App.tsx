@@ -9,7 +9,8 @@ import CONSTANTS from '../assets/constants';
 import './App.css';
 import ResidenceAdminPage from './pages/residenceAdminPage/ResidenceAdminPage';
 import { useAppSelector } from '../services/store';
-import { UserRole } from '../enums/UserRole';
+import TenantsPage from './pages/tenantsPage/TenantsPage';
+import LaundryAssetsPage from './pages/laundryAssetsPage/LaundryAssetsPage';
 
 export default function App() {
     const { user } = useAppSelector(state => state.auth); 
@@ -30,7 +31,9 @@ export default function App() {
           <Route path={CONSTANTS.loginRoute} element={<LoginPage />} />
           
           <Route path={CONSTANTS.residenceAdminRoute} element={navigateUser(<ResidenceAdminPage />)} />
+          <Route path={CONSTANTS.tenantsRoute} element={navigateUser(<TenantsPage />)} />
+          <Route path={CONSTANTS.laundryAssetsRoute} element={navigateUser(<LaundryAssetsPage />)} />
         </Routes>
-        <Footer />    
+        <Footer />
     </>;
 }

@@ -52,9 +52,9 @@ export default function RegisteredTenantsSection() {
             <div className='registered-tenants-section__title'>
                 {CONSTANTS.tenancyPeriodLabel}
             </div>
-            <div className='registered-tenants-section__title'>
+            {/* <div className='registered-tenants-section__title'>
                 {CONSTANTS.contactLabel}
-            </div>
+            </div> */}
             {/* <div className='registered-tenants-section__title' /> */}
         </div>
         {getSectionContent()}

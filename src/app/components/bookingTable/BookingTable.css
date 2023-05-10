@@ -1,6 +1,6 @@
 #booking-table-container {
-    padding: 10px 10% 10px 10%;
-    width: 80%;
+    padding: 10px 5% 10px 5%;
+    width: 90%;
     border: 2px solid var(--coliv-dark-green);
     border-radius: 5px;
 }

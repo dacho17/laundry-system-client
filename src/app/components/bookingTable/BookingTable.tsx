@@ -27,6 +27,7 @@ export default function BookingTable(props: BookingTableProps) {
                 assetId: props.asset.id,
                 timeslot: +selectedDate
             } as BookingRequestDto;
+            console.log(`Date being dispatched ${reqParams.timeslot}`);
             dispatch(fetchLaundryAssetDailyBookings(reqParams));
         }
     }, [selectedDate, props.asset, dispatch]);
@@ -60,9 +61,10 @@ export default function BookingTable(props: BookingTableProps) {
         });
     }
 
+    const adjustedStyle = props.asset === null ? {justifyContent: 'flex-start', paddingTop: '20px'} : {};
     function getBookingTableContent() {
         if (props.asset === null) {
-            return <div className='message-container-centered'>{CONSTANTS.selectAssetLabel}</div>;
+            return <div className='message-container-centered' style={adjustedStyle}>{CONSTANTS.selectAssetLabel}</div>;
         } else if (props.asset !== null && isTableLoading) {
             return <LoadingComponent />;
         } else if (props.asset !== null && tableErrorMsg) {

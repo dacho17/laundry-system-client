@@ -24,22 +24,19 @@ export default function BookingTableEntry(props: BookingTableEntryProps) {
     const [isPopupShown, setIsPopupShown] = useState(false);
 
     const timeslot = `${formatDate(props.timeslot)} ${formatTimeslot(props.timeslot)}`;
-    const bookingMsgContent = `You are about to book the usage of ${props.asset.name} in timeslot ${timeslot}.\n\nPlease make sure you will be using the machine within the chosen time slot.`;
+    const bookingMsgContent = `You are about to book the usage of ${props.asset.name} in timeslot ${timeslot}.\n\nPlease make sure you will be using the asset within the chosen time slot.`;
 
     function handleBooking() {
         dispatch(bookAsset({
             assetId: props.asset.id,
             timeslot: props.timeslot.getTime()
-        } as BookingRequestDto)).then(res => {
-            if (res.meta.requestStatus === CONSTANTS.fulfilledLabel) {
-                dispatch(fetchMyActiveBookings());
-            }
-        })
+        } as BookingRequestDto));
     }
 
     function handlePopupClose() {
         dispatch(setPopupResMessage(null));
         setIsPopupShown(false);
+        dispatch(fetchMyActiveBookings());
     }
 
     return <>

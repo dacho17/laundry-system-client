@@ -34,7 +34,7 @@ export default function AccountInfoForm(props: AccountInfoFormProps) {
     function tryToSendForm() {
         dispatch(setFormResMessage(null));
         if (!validateEmail(email.entered) || !validateMobileNumberDUMMY(mobileNumber.entered)) {
-            dispatch(setFormResMessage({message: CONSTANTS.formIsInvaildMsg, isError: true}));
+            dispatch(setFormResMessage({message: CONSTANTS.accountInfoFormIsInvalid, isError: true}));
             return;
         }
         

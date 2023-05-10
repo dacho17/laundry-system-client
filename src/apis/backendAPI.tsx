@@ -89,7 +89,7 @@ const backendAPI = {
     getResidenceAdmins: () => requests.get(`${BE_API_URL}/residence-admin`),
     updateResidenceAdmin: (values: ResidenceAdminRegFormDto) => requests.post(`${BE_API_URL}/residence-admin/update-residence-admin`, values),
     createLaundryAsset: (values: LaundryAssetRegFormDto) => requests.post(`${BE_API_URL}/residence-admin/create-asset`, values),
-    getLaundryAssets: () => requests.get(`${BE_API_URL}/residence-admin/assets`),
+    getLaundryAssets: () => requests.get(`${BE_API_URL}/residence-admin/laundry-assets`),
     updateLaundryAsset: (values: LaundryAssetRegFormDto) => requests.post(`${BE_API_URL}/residence-admin/update-asset`, values),
 
     createResidence: (values: ResidenceDto) => requests.post(`${BE_API_URL}/admin/residence`, values),

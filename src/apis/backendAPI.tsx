@@ -9,6 +9,7 @@ import LaundryAssetRegFormDto from "../dtos/LaundryAssetRegFormDto";
 import TenantRegistrationFormDto from "../dtos/TenantRegFormDto";
 import ResidenceAdminRegFormDto from "../dtos/ResidenceAdminRegFormDto";
 import ForgotPasswordFormDto from "../dtos/ForgotPasswordFormDto";
+import DailyBookingRequestDto from "../dtos/DailyBookingRequestDto";
 
 // NOTE: attaching jwt to Authorization header if the token is present
 axios.interceptors.request.use(request => {
@@ -74,7 +75,7 @@ const backendAPI = {
     purchaseLaundryService: (values: BookingRequestDto) => requests.post(`${BE_API_URL}/availability/purchase`, values),
 
     getAccessibleLaundryAssets: () => requests.get(`${BE_API_URL}/booking/laundry-assets`),
-    getLaundryAssetDailyBookings: (values: BookingRequestDto) => requests.post(`${BE_API_URL}/booking/daily-bookings`, values),
+    getLaundryAssetDailyBookings: (values: DailyBookingRequestDto) => requests.post(`${BE_API_URL}/booking/daily-bookings`, values),
     getMyFutureBookings: () => requests.get(`${BE_API_URL}/booking/my-bookings`),
     getMyActiveBookings: () => requests.get(`${BE_API_URL}/booking/my-active-bookings`),
     bookLaundryAsset: (values: BookingRequestDto) => requests.post(`${BE_API_URL}/booking`, values),

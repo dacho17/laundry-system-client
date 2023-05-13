@@ -6,6 +6,7 @@ import ActivityDto from "../../dtos/ActivityDto";
 import LaundryAssetDto from "../../dtos/LaundryAssetDto";
 import ActiveBookingsDto from "../../dtos/ActiveBookingsDto";
 import ResponseMessage from "../../interfaces/responseMessage";
+import DailyBookingRequestDto from "../../dtos/DailyBookingRequestDto";
 
 
 interface LaundryAssetDailyBookingsState {
@@ -52,7 +53,7 @@ export const fetchAccessibleLaundryAssets = createAsyncThunk<any>(
     }
 );
 
-export const fetchLaundryAssetDailyBookings = createAsyncThunk<any, BookingRequestDto>(
+export const fetchLaundryAssetDailyBookings = createAsyncThunk<any, DailyBookingRequestDto>(
     "bookings/fetchLaundryAssetDailyBookings",
     async (data, thunkAPI) => {
         try {

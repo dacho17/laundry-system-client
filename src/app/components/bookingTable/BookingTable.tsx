@@ -4,11 +4,11 @@ import BookingTableDatepicker from '../bookingTableDatepicker/BookingTableDatepi
 import './BookingTable.css';
 import { useAppDispatch, useAppSelector } from '../../../services/store';
 import { fetchLaundryAssetDailyBookings } from '../../../services/slices/BookingSlice';
-import BookingRequestDto from '../../../dtos/BookingRequestDto';
-import { getCurrentDate, getDateWithRoundedHour } from '../../utils/elementHelper';
+import { getCurrentDate, getDateWithRoundedHour, getEndOfDate } from '../../utils/elementHelper';
 import LoadingComponent from '../loadingComponent/LoadingComponent';
 import BookingTableEntry from './bookingTableEntry/BookingTableEntry';
 import LaundryAssetDto from '../../../dtos/LaundryAssetDto';
+import DailyBookingRequestDto from '../../../dtos/DailyBookingRequestDto';
 
 interface BookingTableProps {
     asset: LaundryAssetDto | null;
@@ -25,8 +25,10 @@ export default function BookingTable(props: BookingTableProps) {
         if (props.asset !== null) {
             const reqParams = {
                 assetId: props.asset.id,
-                timeslot: +selectedDate
-            } as BookingRequestDto;
+                timeslotFrom: +selectedDate,
+                timeslotTo: +getEndOfDate(selectedDate)
+            } as DailyBookingRequestDto;
+            console.log(JSON.stringify(reqParams));
             dispatch(fetchLaundryAssetDailyBookings(reqParams));
         }
     }, [selectedDate, props.asset, dispatch]);

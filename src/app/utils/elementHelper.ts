@@ -1,4 +1,4 @@
-import { addDays } from 'date-fns';
+import { addDays, subSeconds } from 'date-fns';
 import CONSTANTS from "../../assets/constants";
 
 export function getTenantHeaderLinks(): string[][] {
@@ -36,6 +36,17 @@ export function validateMobileNumberDUMMY(mobileNumberCandidate: string) {
 // date helpers
 export function getCurrentDate(): Date {
     return new Date(Date.now());
+}
+
+export function getEndOfDate(date: Date): Date {
+    const today = new Date(date);
+    today.setMilliseconds(0);
+    today.setSeconds(0);
+    today.setMinutes(0);
+    today.setHours(0);
+    
+    const tomorrow = addDays(today, 1);
+    return subSeconds(tomorrow, 1);
 }
 
 export function getCurrentUTCms(): number {

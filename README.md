@@ -32,9 +32,9 @@ FE:
         - error handling and display
         - mobile and desktop
         - logic is sound
-    11. Polish the app and make it presentable
-        - After determined fit, deploy it with the current setup
-        - mobile and desktop
+    +11. Polish the app and make it presentable
+        + After determined fit, deploy it with the current setup
+        + mobile and desktop
     12. Improvements: Prioritize and decide what is to be done
     13. Presentation
 
@@ -42,15 +42,6 @@ BE:
     0. Error handling
     1. Authorization and Authentication endpoint protection!
     2. set up openAPI/swagger
-
-Improvements:
-    - on refresh lags
-    - admin page - laundry assets statistics (data insights)
-    - forgot Password functionality
-    - stripe integration...
-    - mobile number support
-    - create an additional table to which employees will be connected with residences 'employment' table
-    - dockerize
 
 # Getting Started with Create React App
 

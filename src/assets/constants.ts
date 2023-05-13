@@ -8,7 +8,9 @@ const CONSTANTS = {
     availabilityRoute: '/availability',
     bookingRoute: '/booking',
     accountRoute: '/account',
-    loginRoute: '/login',
+    loginRoute: '/auth/login',
+    forgotPasswordRoute: '/auth/forgot-password',
+    resetPasswordRoute: '/auth/reset-password',
     homeRoute: '/',
     residenceAdminRoute: '/residence-admin',
     tenantsRoute: '/residence-admin/tenants',
@@ -83,12 +85,19 @@ const CONSTANTS = {
     noRegisteredActivities: 'You have no registered activities yet',
     noRegisteredPaymentCards: 'You have no registered payment cards yet',
 
-    // login page content
+    // auth pages content
     usernameValidationError: 'Username must be at least 6 characters long',
     passwordValidationError: 'Password must be at least 6 characters long',
+    confirmedPasswordValidationError: 'Entered passwords do not match',
     fogotMyPassword: 'Forgot my password',
     loginLabel: 'Login',
+    requestPasswordLabel: 'Request Password',
+    forgotPasswordLabel: 'Forgot Password',
+    resetPasswordLabel: 'Reset Password',
     loginErrorMessage: 'Unsuccessful Login',
+    resetPasswordBadRequestError: 'Invalid attempt to reset password',
+    toLoginPageLabel: 'To Login Page',
+    
 
     // admin page content
     registerResidenceAdminLabel: 'Register Residence Admin',

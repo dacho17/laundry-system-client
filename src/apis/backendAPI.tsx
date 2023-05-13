@@ -8,6 +8,7 @@ import ResidenceDto from "../dtos/ResidenceDto";
 import LaundryAssetRegFormDto from "../dtos/LaundryAssetRegFormDto";
 import TenantRegistrationFormDto from "../dtos/TenantRegFormDto";
 import ResidenceAdminRegFormDto from "../dtos/ResidenceAdminRegFormDto";
+import ForgotPasswordFormDto from "../dtos/ForgotPasswordFormDto";
 
 // NOTE: attaching jwt to Authorization header if the token is present
 axios.interceptors.request.use(request => {
@@ -57,14 +58,16 @@ axios.interceptors.response.use(response => {
 
 const requests = {
     get: (url: string, params?: URLSearchParams) => axios.get(url, {params}),
-    post: (url: string, body: {}) => axios.post(url, body),
+    post: (url: string, body: {}, config?: {}) => axios.post(url, body, config),
 }
 
-// const BE_API_URL = process.env.BE_API_URL || 'http://localhost:8080';
-const BE_API_URL = 'https://be-coliv-demo.herokuapp.com';
+const BE_API_URL = process.env.BE_API_URL || 'http://localhost:8080';
+// const BE_API_URL = 'https://be-coliv-demo.herokuapp.com';
 const backendAPI = {
     login: (values: TenantAuthForm) => requests.post(`${BE_API_URL}/auth/login`, values),
     logout: () => requests.get(`${BE_API_URL}/auth/logout`),
+    forgotPasswordRequest: (values: ForgotPasswordFormDto) => requests.post(`${BE_API_URL}/auth/forgot-password`, values),
+    passwordResetRequest: (values: TenantAuthForm, config: {}) => requests.post(`${BE_API_URL}/auth/reset-password`, values, config),
     // signup: (values: User) => requests.post(`${BE_API_URL}/auth/signup`, values),
 
     getLaundryAssetsEarliestAvailabilities: () => requests.get(`${BE_API_URL}/availability`),

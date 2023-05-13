@@ -4,7 +4,9 @@ import backendAPI from "../../apis/backendAPI";
 import User from "../../dtos/User";
 import TenantAuthForm from "../../dtos/TenantAuthForm";
 import CONSTANTS from "../../assets/constants";
-import { UserRole, getUserRole } from "../../enums/UserRole";
+import { getUserRole } from "../../enums/UserRole";
+import ForgotPasswordFormDto from "../../dtos/ForgotPasswordFormDto";
+import ResetPasswordFormDto from "../../dtos/ResetPasswordFormDto";
 
 
 
@@ -69,7 +71,38 @@ export const logOut = createAsyncThunk<any> (
         } catch (err: any) {
             thunkAPI.dispatch(logoutUser());
 
-            const authErrorMsg = err.data.error;
+            const authErrorMsg = err.data.message;
+            return thunkAPI.rejectWithValue(authErrorMsg);
+        }
+    }
+);
+
+export const requestForgotPassword = createAsyncThunk<any, ForgotPasswordFormDto> (
+    "auth/requestForgotPassword",
+    async (data, thunkAPI) => {
+        try {
+            const res: AxiosResponse = await backendAPI.forgotPasswordRequest(data);
+            const resMessage: String = res.data.message!;
+            return thunkAPI.fulfillWithValue(resMessage);
+        } catch (err: any) {
+            const authErrorMsg = err.data.message;
+            return thunkAPI.rejectWithValue(authErrorMsg);
+        }
+    }
+);
+
+export const requestResetPassword = createAsyncThunk<any, ResetPasswordFormDto> (
+    "auth/requestResetPassword",
+    async (data, thunkAPI) => {
+        try {
+            const config = {params: {
+                passwordResetToken: data.passwordResetToken // sending a query parameter next to the POST request body
+            }};
+            const res: AxiosResponse = await backendAPI.passwordResetRequest(data, config);
+            const resMessage: String = res.data.message!;
+            return thunkAPI.fulfillWithValue(resMessage);
+        } catch (err: any) {
+            const authErrorMsg = err.data.message;
             return thunkAPI.rejectWithValue(authErrorMsg);
         }
     }
@@ -115,7 +148,7 @@ export const authSlice = createSlice({
                 } as User;
             }
             state.isLoading = false;
-        }
+        },
     },
     extraReducers: (builder => {
         builder.addMatcher(isAnyOf(logIn.fulfilled), (state, action) => {

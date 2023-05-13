@@ -8,11 +8,10 @@ import { useAppDispatch, useAppSelector } from '../../../services/store';
 import { logIn, setAuthErrorMsg } from '../../../services/slices/AuthSlice';
 import TenantAuthForm from '../../../dtos/TenantAuthForm'; 
 import { useNavigate } from 'react-router-dom';
-import { UserRole } from '../../../enums/UserRole';
 
 export default function LoginForm() {
     const dispatch = useAppDispatch();
-    const { isLoading, authErrorMsg, user } = useAppSelector(state => state.auth);
+    const { isLoading, authErrorMsg } = useAppSelector(state => state.auth);
     const navigate = useNavigate();
 
     const [username, setUsername] = useState<FormInputState>({
@@ -72,8 +71,12 @@ export default function LoginForm() {
                 validationFn={validatePassword}/>
 
             <div id='forgot-password-row' className='margin-bottom-2'>
-                <a href=''>{CONSTANTS.fogotMyPassword}</a>
-                {/* TODO: define forgot password flow and design the screen */}
+                <div
+                    onClick={() => navigate(CONSTANTS.forgotPasswordRoute)}
+                    id='forgot-password-link'
+                >
+                        {CONSTANTS.fogotMyPassword}
+                </div>
             </div>
             <CtaButton
                 label={CONSTANTS.loginLabel}

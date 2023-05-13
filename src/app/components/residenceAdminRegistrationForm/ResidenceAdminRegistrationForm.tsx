@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "../../../services/store";
 import { useEffect, useState } from "react";
 import FormInputState from "../../../interfaces/formInputState";
-import { validateEmail, validateMobileNumberDUMMY } from "../../utils/elementHelper";
+import { validateEmail } from "../../utils/elementHelper";
 import { setFormResMessage } from "../../../services/slices/AdminSlice";
 import CONSTANTS from "../../../assets/constants";
 import { createNewResidenceAdmin, setResetFormEntries, setUpdatedResidenceAdmin, updateResidenceAdmin } from "../../../services/slices/ResidenceAdminSlice";
@@ -11,10 +11,27 @@ import { RegistrationFormType } from "../../../enums/RegistrationFormType";
 import ResidenceAdminRegFormDto from "../../../dtos/ResidenceAdminRegFormDto";
 import './ResidenceAdminRegistrationForm.css';
 import ResidenceAdmin from "../../../dtos/ResidenceAdmin";
+import DialCodeFormInput from "../dialCodeFormInput/DialCodeFormInput";
+import CountryDialCode from "../../../dtos/CountryDialCode";
+import { MY, SG, TH, ID, PH, VN, LA, KH, MM, AU } from 'country-flag-icons/react/3x2';
+import { validateMobileNumber } from "../../utils/mobileNumberValidator";
 
 interface ResidenceAdminRegistrationFormProps {
     formType: RegistrationFormType;
 }
+
+const SUPPORTED_COUNTRIES = [
+    { countryIcon: <MY />, dialCode: '+60' },
+    { countryIcon: <SG />, dialCode: '+65' },
+    { countryIcon: <TH />, dialCode: '+66' },
+    { countryIcon: <ID />, dialCode: '+62' },
+    { countryIcon: <PH />, dialCode: '+63' },
+    { countryIcon: <VN />, dialCode: '+84' },
+    { countryIcon: <LA />, dialCode: '+856' },
+    { countryIcon: <KH />, dialCode: '+855' },
+    { countryIcon: <MM />, dialCode: '+95' },
+    { countryIcon: <AU />, dialCode: '+61' },
+] as CountryDialCode[];
 
 export default function ResidenceAdminRegistrationForm(props: ResidenceAdminRegistrationFormProps) {
     const dispatch = useAppDispatch();
@@ -35,6 +52,7 @@ export default function ResidenceAdminRegistrationForm(props: ResidenceAdminRegi
         isValid: false,
         isTouched: false,
     });
+    const [countryDialCode, setCountryDialCode] = useState<CountryDialCode>(SUPPORTED_COUNTRIES[0]);
     const [mobileNumber, setMobileNumber] = useState<FormInputState>({
         entered: '',
         isValid: false,
@@ -87,7 +105,7 @@ export default function ResidenceAdminRegistrationForm(props: ResidenceAdminRegi
     function validateForm() {
         return validateUsername(username.entered) && validatePassword(password.entered)
             && validateName(name.entered) && validateName(surname.entered)
-            && validateMobileNumberDUMMY(mobileNumber.entered) && validateEmail(email.entered);
+            && validateMobileNumber(countryDialCode.dialCode, mobileNumber.entered) && validateEmail(email.entered);
     }
 
     function setFormStates(updResAdmin: ResidenceAdmin | null) {
@@ -126,6 +144,11 @@ export default function ResidenceAdminRegistrationForm(props: ResidenceAdminRegi
                 isValid: false
             }
         });
+
+        const dialCode = updResAdmin !== null
+            ? SUPPORTED_COUNTRIES.find((dc: CountryDialCode) => dc.dialCode === updResAdmin.countryDialCode)
+            : SUPPORTED_COUNTRIES[0];
+        setCountryDialCode(dialCode!);
         setMobileNumber((prevState) => {
             return {
                 entered: updResAdmin?.mobileNumber || '',
@@ -147,6 +170,7 @@ export default function ResidenceAdminRegistrationForm(props: ResidenceAdminRegi
             username: username.entered,
             password: password.entered,
             email: email.entered,
+            countryDialCode: countryDialCode.dialCode,
             mobileNumber: mobileNumber.entered,
         } as ResidenceAdminRegFormDto;
 
@@ -190,12 +214,25 @@ export default function ResidenceAdminRegistrationForm(props: ResidenceAdminRegi
                 inputState={email}
                 errMsg={CONSTANTS.emailValidationError}
                 validationFn={validateEmail}/>
-            <GenFormInput
-                name='mobileNumber'
-                setStateFn={setMobileNumber}
-                inputState={mobileNumber}
-                errMsg={CONSTANTS.mobileNumberValidationError}
-                validationFn={validateMobileNumberDUMMY}/>
+            <div className='margin-bottom-2'>
+                <div className='mobile-number-input-row'>
+                    <DialCodeFormInput
+                        countryDialCodes={SUPPORTED_COUNTRIES}
+                        currentlySelectedDialCode={countryDialCode}
+                        setSelectedDialCode={setCountryDialCode}/>
+                    <GenFormInput
+                        name='mobile-number'
+                        setStateFn={setMobileNumber}
+                        inputState={mobileNumber}
+                        validationFn={(mobileNum: string) => validateMobileNumber(countryDialCode.dialCode, mobileNum)}
+                        minWidth='160px'/>
+                </div>
+                {
+                    !mobileNumber.isValid && mobileNumber.isTouched &&
+                        <span className="gen-form-input__error-msg">{CONSTANTS.mobileNumberValidationError}</span>
+                }
+            </div>
+
             <GenFormInput
                 name='username'
                 setStateFn={setUsername}

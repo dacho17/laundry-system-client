@@ -4,5 +4,6 @@ export default interface ResidenceAdminRegFormDto {
     username: string;
     password: string;
     email: string;
+    countryDialCode: string;
     mobileNumber: string;
 }

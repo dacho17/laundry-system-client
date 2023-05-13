@@ -3,5 +3,6 @@ export default interface ResidenceAdmin {
     name: string;
     surname: string;
     email: string;
+    countryDialCode: string;
     mobileNumber: string;
 }

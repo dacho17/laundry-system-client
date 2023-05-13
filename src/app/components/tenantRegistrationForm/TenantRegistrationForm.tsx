@@ -3,7 +3,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useAppDispatch, useAppSelector } from "../../../services/store";
 import { useEffect, useState } from "react";
 import FormInputState from "../../../interfaces/formInputState";
-import { getCurrentDate, isDifferenceAtLeast30Days, validateEmail, validateMobileNumberDUMMY } from "../../utils/elementHelper";
+import { getCurrentDate, isDifferenceAtLeast30Days, validateEmail } from "../../utils/elementHelper";
 import { setFormResMessage } from "../../../services/slices/AdminSlice";
 import CONSTANTS from "../../../assets/constants";
 import TenantRegistrationFormDto from "../../../dtos/TenantRegFormDto";
@@ -13,6 +13,10 @@ import CtaButton from "../ctaButton/CtaButton";
 import './TenantRegistrationForm.css';
 import { RegistrationFormType } from "../../../enums/RegistrationFormType";
 import Tenant from "../../../dtos/Tenant";
+import CountryDialCode from "../../../dtos/CountryDialCode";
+import { MY, SG, TH, ID, PH, VN, LA, KH, MM, AU } from 'country-flag-icons/react/3x2';
+import DialCodeFormInput from "../dialCodeFormInput/DialCodeFormInput";
+import { validateMobileNumber } from "../../utils/mobileNumberValidator";
 
 function onInputChanged(event: { target: HTMLInputElement; }, didBlur: boolean, setStateFn: Function, validationFn: Function) {
     const enteredDate = event.target.value ? new Date(event.target.value) : new Date();
@@ -24,6 +28,19 @@ function onInputChanged(event: { target: HTMLInputElement; }, didBlur: boolean, 
         }
     });
 }
+
+const SUPPORTED_COUNTRIES = [
+    { countryIcon: <MY />, dialCode: '+60' },
+    { countryIcon: <SG />, dialCode: '+65' },
+    { countryIcon: <TH />, dialCode: '+66' },
+    { countryIcon: <ID />, dialCode: '+62' },
+    { countryIcon: <PH />, dialCode: '+63' },
+    { countryIcon: <VN />, dialCode: '+84' },
+    { countryIcon: <LA />, dialCode: '+856' },
+    { countryIcon: <KH />, dialCode: '+855' },
+    { countryIcon: <MM />, dialCode: '+95' },
+    { countryIcon: <AU />, dialCode: '+61' },
+] as CountryDialCode[];
 
 interface TenantRegistrationFormProps {
     formType: RegistrationFormType;
@@ -48,6 +65,8 @@ export default function TenantRegistrationForm(props: TenantRegistrationFormProp
         isValid: false,
         isTouched: false,
     });
+
+    const [countryDialCode, setCountryDialCode] = useState<CountryDialCode>(SUPPORTED_COUNTRIES[0]);
     const [mobileNumber, setMobileNumber] = useState<FormInputState>({
         entered: '',
         isValid: false,
@@ -121,7 +140,7 @@ export default function TenantRegistrationForm(props: TenantRegistrationFormProp
     function validateForm() {
         return validateUsername(username.entered) && validatePassword(password.entered)
             && validateName(name.entered) && validateName(surname.entered)
-            && validateMobileNumberDUMMY(mobileNumber.entered) && validateEmail(email.entered)
+            && validateMobileNumber(countryDialCode.dialCode, mobileNumber.entered) && validateEmail(email.entered)
             && validateTenancyFromDate(tenancyFrom.entered) && validateTenancyToDate(tenancyFrom.entered, tenancyTo.entered);
     }
 
@@ -164,6 +183,11 @@ export default function TenantRegistrationForm(props: TenantRegistrationFormProp
                 ...isTouchedAndIsValidInit
             }
         });
+
+        const dialCode = updTen !== null
+            ? SUPPORTED_COUNTRIES.find((dc: CountryDialCode) => dc.dialCode === updTen!.countryDialCode)
+            : SUPPORTED_COUNTRIES[0];
+        setCountryDialCode(dialCode!);
         setMobileNumber((prevState) => {
             return {
                 entered: updTen?.mobileNumber || '',
@@ -197,6 +221,7 @@ export default function TenantRegistrationForm(props: TenantRegistrationFormProp
             username: username.entered,
             password: password.entered,
             email: email.entered,
+            countryDialCode: countryDialCode.dialCode,
             mobileNumber: mobileNumber.entered,
             tenancyFrom: tenancyFrom.entered,
             tenancyTo: tenancyTo.entered
@@ -243,12 +268,24 @@ export default function TenantRegistrationForm(props: TenantRegistrationFormProp
                 inputState={email}
                 errMsg={CONSTANTS.emailValidationError}
                 validationFn={validateEmail}/>
-            <GenFormInput
-                name='mobileNumber'
-                setStateFn={setMobileNumber}
-                inputState={mobileNumber}
-                errMsg={CONSTANTS.mobileNumberValidationError}
-                validationFn={validateMobileNumberDUMMY}/>
+            <div className='margin-bottom-2'>
+                <div className='mobile-number-input-row'>
+                    <DialCodeFormInput
+                        countryDialCodes={SUPPORTED_COUNTRIES}
+                        currentlySelectedDialCode={countryDialCode}
+                        setSelectedDialCode={setCountryDialCode}/>
+                    <GenFormInput
+                        name='mobile-number'
+                        setStateFn={setMobileNumber}
+                        inputState={mobileNumber}
+                        validationFn={(mobileNum: string) => validateMobileNumber(countryDialCode.dialCode, mobileNum)}
+                        minWidth='160px'/>
+                </div>
+                {
+                    !mobileNumber.isValid && mobileNumber.isTouched &&
+                        <span className="gen-form-input__error-msg">{CONSTANTS.mobileNumberValidationError}</span>
+                }
+            </div>
             <GenFormInput
                 name='username'
                 setStateFn={setUsername}

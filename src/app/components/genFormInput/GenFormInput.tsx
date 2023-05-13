@@ -47,7 +47,8 @@ function GenFormInput(props: FormInput) {
                         {props.name}</label>
             </div>
             {
-                props.validationFn && !props.validationFn(props.inputState.entered) && props.inputState.isTouched &&
+                props.validationFn && !props.validationFn(props.inputState.entered) && props.inputState.isTouched
+                    && props.errMsg &&
                     <span className="gen-form-input__error-msg">{props.errMsg}</span>
             }
         </div>

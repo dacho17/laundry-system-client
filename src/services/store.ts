@@ -13,8 +13,8 @@ export const store = configureStore({
         availability: availabilitySlice.reducer,
         booking: bookingsSlice.reducer,
         account: accountSlice.reducer,
-        residenceAdmin: residenceAdminSlice.reducer,    // TODO: build on top of this
-        admin: adminSlice.reducer,                      // TODO: build on top of this
+        residenceAdmin: residenceAdminSlice.reducer,
+        admin: adminSlice.reducer,
     }
 });
 

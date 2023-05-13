@@ -6,5 +6,6 @@ export default interface TenantRegFormDto {
     tenancyFrom: Date;
     tenancyTo: Date;
     email: string;
+    countryDialCode: string;
     mobileNumber: string;
 }

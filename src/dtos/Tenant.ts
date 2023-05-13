@@ -6,5 +6,6 @@ export default interface Tenant {
     tenancyTo: Date;
     tenancyActive: boolean;
     email: string;
+    countryDialCode: string;
     mobileNumber: string;
 }

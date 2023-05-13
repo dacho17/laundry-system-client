@@ -40,7 +40,7 @@ export default function AccountPage() {
                 currentlyActiveSection={activeSection}
                 setActiveSectionFn={setActiveSection}
             />
-            <div className='section-container'>
+            <div className='section-container' style={{height: 'auto'}}>
                 {getActiveSection()}
             </div>
         </div>

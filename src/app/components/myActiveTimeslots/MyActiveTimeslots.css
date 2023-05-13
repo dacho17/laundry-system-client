@@ -4,6 +4,7 @@
     align-items: flex-start;
     justify-content: flex-start;
     width: 100%;
+    height: 90%;
 }
 
 .my-active-timeslots-section__header {
@@ -30,7 +31,7 @@
     overflow: scroll;
     border: 2px solid var(--coliv-dark-green);
     border-radius: 5px;
-    height: 150px; /* TODO: find a better solution*/
+    height: 40%;
 }
 
 .my-active-timeslots-section-table__entry {

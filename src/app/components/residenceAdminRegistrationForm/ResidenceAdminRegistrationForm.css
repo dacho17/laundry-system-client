@@ -1,5 +1,6 @@
 .residence-admin-registration-form-container {
     width: 40%;
+    height: 80%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -16,9 +17,24 @@
     align-items: flex-start;
 }
 
+.mobile-number-input-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
 @media only screen and (max-width: 1000px) {
     .residence-admin-registration-form-container {
         width: 90%;
         border: none;
+    }
+}
+
+@media only screen and (max-width: 450px) {
+    .mobile-number-input-row {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
     }
 }

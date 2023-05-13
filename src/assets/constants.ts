@@ -19,6 +19,22 @@ const CONSTANTS = {
     logoutLabel: 'Logout',
 
     // availability page content
+    rulesOnUseLabel: 'Rules on Use',
+    rulesOnUse: [
+        '1. Tenants are kindly asked to be respectful when using their booked time slots.\
+            \nThis includes picking up their laundry promptly after the use.',
+        '2. Tenants are kindly asked to use laundry machines with care. \
+            \nThis includes saftely operating the machines, from the start until the end of their operation. \
+            \nThe machines are not to be openned during their operation time.',
+        '3. Tenants are to take utmost care not to put sharp objects in the machines, or objects of any kind which \
+        could compromise optimal functioning of the machines. \
+            \nPlease thoroughly check your clothes and empty your pockets before using the machines.',
+        '4. Tenants are to take utmost care not to put overly stained clothes in the machines if they estimate \
+            their washing would compromise optimal washing job for the tenants which will use the machines after them.',
+        '5. Tenants are not to put their own detergent in the machines which already come equiped with the detergent.\
+            \nThese machines are marked by special labels.'
+    ],
+    useMachinesLabel: 'Use Machines',
     availabilityLabel: 'Availability',
     assetLabel: 'Asset',
     noteLabel: 'Note',
@@ -160,8 +176,20 @@ const CONSTANTS = {
     firstHourOfDay: 0,
     beApiRolePrefix: 'ROLE_',
     unanticipatedEvent: 'Unanticipated Event Occured',
-    theDataCannotBeFetchedMomentarily: 'Our systems are currently unavailable. Please try again later.'
+    theDataCannotBeFetchedMomentarily: 'Our systems are currently unavailable. Please try again later.',
 
+    // country dial codes
+    DIAL_CODE_MY: '+60',
+    DIAL_CODE_SG: '+65',
+    DIAL_CODE_TH: '+66',
+    DIAL_CODE_ID: '+62',
+    DIAL_CODE_PH: '+63',
+    DIAL_CODE_VN: '+84',
+    DIAL_CODE_LA: '+856',
+    DIAL_CODE_KH: '+855',
+    DIAL_CODE_MM: '+95',
+    DIAL_CODE_AU: '+61',
+    unknownDialCodeError: 'An uknown dial code has been entered',
 }
 
 export default CONSTANTS;

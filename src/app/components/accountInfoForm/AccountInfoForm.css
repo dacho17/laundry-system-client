@@ -3,6 +3,13 @@
     width: 42%;
 }
 
+.mobile-number-input-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
 .account-info-form {
     width: 100%;
 }

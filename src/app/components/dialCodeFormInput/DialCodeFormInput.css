@@ -1,0 +1,96 @@
+.mobile-number-dropdown {
+    margin-right: 10px;
+    position: relative;
+}
+
+.mobile-number-dropdown__label-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 120px;
+    height: 60px;
+    padding: 4px 4% 4px;
+    border: 1px solid var(--black);
+    border-radius: 4px;
+    background-color: transparent;
+    padding-left: 10px;
+}
+
+.mobile-number-input__country-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.mobile-number-input__flag-container {
+    height: 30px;
+    width: 30px;
+    margin-right: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.mobile-number-dropdown__label-container:hover:not(:disabled) {
+    cursor: pointer;
+    background-color: var(--beige);
+}
+
+.mobile-number-dropdown__label {
+    font-size: var(--body-font-large-screen);
+}
+
+.mobile-number-dropdown__menu {
+    position: absolute;
+    z-index: 3;
+    background-color: var(--beige);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 150px;
+    height: 200px;
+    overflow: scroll;
+    border: 2px solid var(--coliv-dark-green);
+    border-radius: 5px;
+    padding-bottom: 1%;
+    padding-top: 1%;
+    visibility: hidden;
+    transform: translateY(0);
+    transition: transform 0.3s ease-out;
+}
+
+.mobile-number-dropdown__menu.open {
+    visibility: visible;
+    transform: translateY(5px);
+ }
+
+.mobile-number-dropdown__menu-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border: none;
+    background-color: transparent;
+    width: 100%;
+    font-size: var(--body-font-large-screen);
+    padding: 2% 4%;
+}
+
+.mobile-number-dropdown__menu-item:hover {
+    cursor: pointer;
+}
+
+.mobile-number-dropdown__menu-item-delimiter {
+    border: 1px solid var(--coliv-dark-green);
+    width: 90%;
+}
+
+@media only screen and (max-width: 450px) {
+    .mobile-number-dropdown {
+        margin-bottom: 15px;
+    }
+}

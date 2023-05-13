@@ -29,10 +29,6 @@ export function validateEmail(emailCandidate: string): boolean {
     return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(emailCandidate);
 }
 
-export function validateMobileNumberDUMMY(mobileNumberCandidate: string) {
-    return mobileNumberCandidate.length > 7;
-}
-
 // date helpers
 export function getCurrentDate(): Date {
     return new Date(Date.now());

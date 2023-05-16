@@ -1,50 +1,24 @@
 import { useEffect, useState } from 'react';
 import CONSTANTS from '../../../assets/constants';
-import AvailabilityEntry from '../../components/availabilityEntry/AvailabilityEntry';
-import { useAppDispatch, useAppSelector } from '../../../services/store';
+import { useAppDispatch } from '../../../services/store';
 import { fetchEarliestAvailabilities } from '../../../services/slices/AvailabilitySlice';
-import LoadingComponent from '../../components/loadingComponent/LoadingComponent';
 import { refreshUserLogin } from '../../../services/slices/AuthSlice';
 import './AvailabilityPage.css';
 import UsageRulesSection from '../../components/usageRulesSection/UsageRulesSection';
 import SectionNavigator from '../../components/sectionNavigator/SectionNavigator';
 import CtaButton from '../../components/ctaButton/CtaButton';
+import AvailabilitySectionTable from '../../components/availabilitySectionTable/AvailabilitySectionTable';
 
 export default function AvailabilityPage() {
     const dispatch = useAppDispatch();
-    const { isLoading, earliestAvailabilities, errorMsg} = useAppSelector(state => state.availability);
     const [activeSection, setActiveSection] = useState(0);
 
     useEffect(() => {
         dispatch(refreshUserLogin());
         dispatch(fetchEarliestAvailabilities());
-    }, [dispatch, earliestAvailabilities]);
+    }, [dispatch]);
 
     console.log(`Availability page reloaded!\n\n`);
-    console.log(`earliest availabilities exist = ${earliestAvailabilities != null}`);
-
-    function getPageContent() {
-        if (earliestAvailabilities) {
-            if (earliestAvailabilities.length === 0) {
-                return <div className='message-container-centered'>{CONSTANTS.noRegisteredLaundryAssetsLabel}</div>;
-            } else {
-                return <>
-                    {earliestAvailabilities.map((availability, index) => {
-                        return <AvailabilityEntry
-                            key={index}
-                            availability={availability}
-                        />
-                    })}
-                </>
-            }
-        } else if (isLoading) {
-            return <LoadingComponent />
-        } else if (errorMsg) {
-            return <div className='message-container-centered'>{errorMsg}</div>;
-        } else  { // (earliestAvailabilities == null) 
-            return <div className='message-container-centered'>{CONSTANTS.theDataCannotBeFetchedMomentarily}</div>;
-        } 
-    }
 
     function getActiveSection() {
         switch(activeSection) {
@@ -80,14 +54,11 @@ export default function AvailabilityPage() {
                             {CONSTANTS.actionLabel}
                         </div>
                     </div>
-                    <div id='availability-section__table' style={tableStyleAdaptation}>
-                        {getPageContent()}
-                    </div>
+                    <AvailabilitySectionTable />
                 </div>
         }
     }
 
-    const tableStyleAdaptation = earliestAvailabilities === null || earliestAvailabilities.length === 0 ? {paddingTop: 0} : {};
     return (
         <div className='page-content'>
             <SectionNavigator

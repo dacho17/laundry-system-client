@@ -42,9 +42,10 @@ function getLabels(availability: TimeslotAvailabilityDto) {
 }
 
 export default function AvailabilityEntry({availability}: AvailabilityEntryProps) {
-    const [isPopupShown, setIsPopupShown] = useState(false);
     const dispatch = useAppDispatch();
     const { isPopupLoading, popupResMsg } = useAppSelector(state => state.availability);
+    const initPopupShown = popupResMsg ? true : false;
+    const [isPopupShown, setIsPopupShown] = useState(initPopupShown);
     const { user } = useAppSelector(state => state.auth);
     const navigate = useNavigate();
 
@@ -61,7 +62,7 @@ export default function AvailabilityEntry({availability}: AvailabilityEntryProps
                 const currentPointBalance = user!.loyaltyPoints;
                 const newPointBalance = currentPointBalance - convertPriceToPoints(activity.servicePrice!, activity.currency!);
                 dispatch(setLoyaltyPoints(newPointBalance));
-                dispatch(setPopupResMessage(null));
+                setIsPopupShown(false);
             }
         });
     }

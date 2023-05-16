@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice, isAnyOf } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
 import backendAPI from "../../apis/backendAPI";
 import ResponseMessage from "../../interfaces/responseMessage";
-import BookingRequestDto from "../../dtos/BookingRequestDto";
 import TimeslotAvailabilityDto from "../../dtos/TimeslotAvailabilityDto";
 import PurchaseRequestDto from "../../dtos/PurchaseRequestDto";
 
@@ -31,7 +30,6 @@ export const fetchEarliestAvailabilities = createAsyncThunk<any>(
             const res: AxiosResponse = await backendAPI.getLaundryAssetsEarliestAvailabilities();
             const earliestAvailabilities: TimeslotAvailabilityDto[] = res.data.data!;
             thunkAPI.dispatch(setEarliestAvailabilities(earliestAvailabilities));
-            // TODO: I can set a message here as well
         } catch (err: any) {
             const errorMsg = err.data.message;
             return thunkAPI.rejectWithValue(errorMsg);

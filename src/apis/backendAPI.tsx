@@ -64,8 +64,8 @@ const requests = {
     post: (url: string, body: {}, config?: {}) => axios.post(url, body, config),
 }
 
-const BE_API_URL = process.env.BE_API_URL || 'http://localhost:8080';
-// const BE_API_URL = 'https://be-coliv-demo.herokuapp.com';
+// const BE_API_URL = process.env.BE_API_URL || 'http://localhost:8080';
+const BE_API_URL = 'https://be-coliv-demo.herokuapp.com';
 const backendAPI = {
     login: (values: TenantAuthForm) => requests.post(`${BE_API_URL}/auth/login`, values),
     logout: () => requests.get(`${BE_API_URL}/auth/logout`),

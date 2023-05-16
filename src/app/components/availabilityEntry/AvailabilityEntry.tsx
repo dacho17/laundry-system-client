@@ -48,6 +48,8 @@ export default function AvailabilityEntry({availability}: AvailabilityEntryProps
     const { user } = useAppSelector(state => state.auth);
     const navigate = useNavigate();
 
+    console.log(`AvailabilityEntry reloaded. IsPopupShown=${isPopupShown}, popupResMsg=${popupResMsg}\n\n`);
+
     function handlePurchaseAsset(activity: ActivityDto, isPayingWithLoyaltyPoints: boolean) {
         const purchaseRequest = {
             assetId: activity.assetId,

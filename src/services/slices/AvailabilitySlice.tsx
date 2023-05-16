@@ -31,6 +31,7 @@ export const fetchEarliestAvailabilities = createAsyncThunk<any>(
             const res: AxiosResponse = await backendAPI.getLaundryAssetsEarliestAvailabilities();
             const earliestAvailabilities: TimeslotAvailabilityDto[] = res.data.data!;
             thunkAPI.dispatch(setEarliestAvailabilities(earliestAvailabilities));
+            // TODO: I can set a message here as well
         } catch (err: any) {
             const errorMsg = err.data.message;
             return thunkAPI.rejectWithValue(errorMsg);

@@ -16,29 +16,34 @@ export default function AvailabilityPage() {
     const [activeSection, setActiveSection] = useState(0);
 
     useEffect(() => {
-        dispatch(refreshUserLogin())
-    }, [dispatch]);
+        dispatch(refreshUserLogin());
+        dispatch(fetchEarliestAvailabilities());
+    }, [dispatch, earliestAvailabilities]);
+
+    console.log(`Availability page reloaded!\n\n`);
+    console.log(`earliest availabilities exist = ${earliestAvailabilities != null}`);
 
     function getPageContent() {
-        if (isLoading) {
+        if (earliestAvailabilities) {
+            if (earliestAvailabilities.length === 0) {
+                return <div className='message-container-centered'>{CONSTANTS.noRegisteredLaundryAssetsLabel}</div>;
+            } else {
+                return <>
+                    {earliestAvailabilities.map((availability, index) => {
+                        return <AvailabilityEntry
+                            key={index}
+                            availability={availability}
+                        />
+                    })}
+                </>
+            }
+        } else if (isLoading) {
             return <LoadingComponent />
         } else if (errorMsg) {
             return <div className='message-container-centered'>{errorMsg}</div>;
-        } else if (earliestAvailabilities == null) {
+        } else  { // (earliestAvailabilities == null) 
             return <div className='message-container-centered'>{CONSTANTS.theDataCannotBeFetchedMomentarily}</div>;
-        } else {
-            if (earliestAvailabilities.length === 0) {
-                return <div className='message-container-centered'>{CONSTANTS.noRegisteredLaundryAssetsLabel}</div>;
-            }
-            return <>
-                {earliestAvailabilities.map((availability, index) => {
-                    return <AvailabilityEntry
-                        key={index}
-                        availability={availability}
-                    />
-                })}
-            </>
-        }
+        } 
     }
 
     function getActiveSection() {

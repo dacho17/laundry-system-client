@@ -51,6 +51,8 @@ const CONSTANTS = {
     currentlyNotOperationalLabel: 'Asset is not operational',
     paymentConfirmationTitleLabel: 'Payment Confirmation',
     confirmPaymentLabel: 'Confirm Payment',
+    useCardLabel: 'Use Card',
+    usePointsLabel: 'Use Points',
     confirmPaymentErrorMsg: 'Something went wrong.\nPlease try again.',
 
     // booking page content
@@ -74,9 +76,14 @@ const CONSTANTS = {
     infoLabel: 'Info',
     paymentLabel: 'Payment', 
     activityHistoryLabel: 'Activity History',
+    loyaltyProgramLabel: 'Loyalty Program',
+    yourLoyaltyPointsLabel: 'Your Loyalty Points',
+    buyLabel: 'Buy',
     timeOfActivityLabel: 'Time of Activity',
     activityLabel: 'Activity',
     chosenTimeslotLabel: 'Chosen Timeslot',
+    descriptionLabel: 'Description',
+    freeOfChargeLabel: 'Free',
     paidAmountLabel: 'Paid Amount',
     bookingLabel: 'Booking',
     usernamePlaceholder: 'username',
@@ -100,6 +107,7 @@ const CONSTANTS = {
     registerPaymentFormIsInvalid: 'Please provide valid card information',
     noRegisteredActivities: 'You have no registered activities yet',
     noRegisteredPaymentCards: 'You have no registered payment cards yet',
+    noLoyaltyOffers: 'There are no offers at the moment',
 
     // auth pages content
     usernameValidationError: 'Username must be at least 6 characters long',
@@ -131,6 +139,9 @@ const CONSTANTS = {
     dateMustNotBeInPast: 'Date must not be in the past',
     tenancyMustBeAtLeastOneMonth: 'The tenancy must be at least 30 days',
     nameLabel: 'Name',
+    pointsLabel: 'Points',
+    priceLabel: 'Price',
+    expiryDateLabel: 'Expiry Date',
     tenancyPeriodLabel: 'Tenancy Period',
     contactLabel: 'Contact',
     assetTypeLabel: 'Asset Type',
@@ -165,6 +176,7 @@ const CONSTANTS = {
     // store content
     usernameLabelLocalStorage: 'username',
     userRoleLabelLocalStorage: 'userRole',
+    userLoyaltyPointsStorage: 'loyaltyPoints',
     userJwtLabelLocalStorage: 'userJwt',
 
     // general

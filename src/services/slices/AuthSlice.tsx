@@ -113,22 +113,25 @@ export const authSlice = createSlice({
     initialState,
     reducers: {
         loginUser: (state, action) => {
-            const { username, role, jwt } = action.payload as User;
+            const { username, role, jwt, loyaltyPoints } = action.payload as User;
             const cleanedRole = role.valueOf().toString().replace(CONSTANTS.beApiRolePrefix, '');
             const formattedRole = getUserRole(cleanedRole);
             localStorage.setItem(CONSTANTS.usernameLabelLocalStorage, username);
             localStorage.setItem(CONSTANTS.userRoleLabelLocalStorage, formattedRole.toString());
+            localStorage.setItem(CONSTANTS.userLoyaltyPointsStorage, loyaltyPoints.toString());
             localStorage.setItem(CONSTANTS.userJwtLabelLocalStorage, jwt);
 
             state.user = {
                 username: username,
                 role: getUserRole(formattedRole.toString()),
+                loyaltyPoints: loyaltyPoints,
                 jwt: jwt,
             } as User;
         },
         logoutUser: (state) => {
             localStorage.removeItem(CONSTANTS.usernameLabelLocalStorage);
             localStorage.removeItem(CONSTANTS.userRoleLabelLocalStorage);
+            localStorage.removeItem(CONSTANTS.userLoyaltyPointsStorage);
             localStorage.removeItem(CONSTANTS.userJwtLabelLocalStorage);
         },
         setAuthErrorMsg: (state, action) => {
@@ -138,17 +141,30 @@ export const authSlice = createSlice({
             state.isLoading = true;
             const username = localStorage.getItem(CONSTANTS.usernameLabelLocalStorage);
             const userRole = localStorage.getItem(CONSTANTS.userRoleLabelLocalStorage);
+            const loyaltyPoints = localStorage.getItem(CONSTANTS.userLoyaltyPointsStorage);
             const userJwt = localStorage.getItem(CONSTANTS.userJwtLabelLocalStorage);
-            
+
             if (username && userRole && userJwt) {
                 state.user = {
                     username: username,
                     role: getUserRole(userRole),
+                    loyaltyPoints: loyaltyPoints ? parseInt(loyaltyPoints) : 0,
                     jwt: userJwt,
                 } as User;
             }
             state.isLoading = false;
         },
+        setLoyaltyPoints: (state, action) => {
+            const newPointBalance = action.payload as number;
+            localStorage.setItem(CONSTANTS.userLoyaltyPointsStorage, newPointBalance.toString());
+
+            state.user = {
+                username: localStorage.getItem(CONSTANTS.usernameLabelLocalStorage),
+                role: getUserRole(localStorage.getItem(CONSTANTS.userRoleLabelLocalStorage)!),
+                loyaltyPoints: newPointBalance,
+                jwt: localStorage.getItem(CONSTANTS.userJwtLabelLocalStorage),
+            } as User;
+        }
     },
     extraReducers: (builder => {
         builder.addMatcher(isAnyOf(logIn.fulfilled), (state, action) => {
@@ -171,4 +187,4 @@ export const authSlice = createSlice({
     })
 });
 
-export const { loginUser, logoutUser, refreshUserLogin, setAuthErrorMsg } = authSlice.actions;
+export const { setLoyaltyPoints, loginUser, logoutUser, refreshUserLogin, setAuthErrorMsg } = authSlice.actions;

@@ -1,16 +1,18 @@
 import { useEffect, useState } from 'react';
 import CONSTANTS from '../../../assets/constants';
 import CtaButton from '../ctaButton/CtaButton';
-import Popup from '../popup/Popup';
-import './MyActiveTimeslots.css';
 import { useAppDispatch, useAppSelector } from '../../../services/store';
 import { fetchMyActiveBookings } from '../../../services/slices/BookingSlice';
-import { formatDate, formatFromToTimeslot, getCurrentDate, getDateWithRoundedHour } from '../../utils/elementHelper';
+import { formatDate, formatFromToTimeslot } from '../../utils/elementHelper';
 import LoadingComponent from '../loadingComponent/LoadingComponent';
 import { ActiveBookingType } from '../../../enums/ActiveBookingType';
 import ReservedBooking from '../../../dtos/ReservedBooking';
-import BookingRequestDto from '../../../dtos/BookingRequestDto';
+import { convertPriceToPoints } from '../../utils/priceConverter';
+import PurchasePopup from '../purchasePopup/PurchasePopup';
+import './MyActiveTimeslots.css';
+import PurchaseRequestDto from '../../../dtos/PurchaseRequestDto';
 import { purchaseLaundryAssetService, setPopupResMessage } from '../../../services/slices/AvailabilitySlice';
+import { setLoyaltyPoints } from '../../../services/slices/AuthSlice';
 
 function getWindowDimensions() {
     const { innerWidth: width, innerHeight: height } = window;
@@ -24,6 +26,7 @@ export default function MyActiveTimeslots() {
     const dispatch = useAppDispatch();
     const { myActiveBookings, isTableLoading, tableErrorMsg } = useAppSelector(state => state.booking); 
     const { isPopupLoading, popupResMsg } = useAppSelector(state => state.availability);
+    const { user } = useAppSelector(state => state.auth);
 
     const [isPopupShown, setIsPopupShown] = useState(false);
 
@@ -45,21 +48,27 @@ export default function MyActiveTimeslots() {
         };
     }, [dispatch, myActiveBookings]);
 
+    function handlePurchaseAsset(purchase: ReservedBooking, isPayingWithLoyaltyPoints: boolean) {
+        const purchaseRequest = {
+            assetId: purchase.assetId,
+            isPayingWithLoyaltyPoints: isPayingWithLoyaltyPoints
+        } as PurchaseRequestDto;
+
+        dispatch(purchaseLaundryAssetService(purchaseRequest)).then(res => {
+            if (res.meta.requestStatus === CONSTANTS.fulfilledLabel) {
+                const currentPointBalance = user!.loyaltyPoints;
+                const newPointBalance = currentPointBalance - convertPriceToPoints(purchase.servicePrice!, purchase.currency!);
+                dispatch(setLoyaltyPoints(newPointBalance));  
+            }
+        });
+    }
+
     function getTableItem(label: string, value: string) {
         if (windowSize.width > 800) {
             return value;
         } else {
             return `${label}: ${value}`;
         }
-    }
-
-    function handlePurchaseAsset(purchase: ReservedBooking) {
-        const purchaseRequest = {
-            assetId: purchase.assetId,
-            timeslot: getDateWithRoundedHour(new Date(purchase.fromTimeslot), getCurrentDate().getHours()).getTime()
-        } as BookingRequestDto;
-
-        dispatch(purchaseLaundryAssetService(purchaseRequest));
     }
 
     function handlePopupClose() {
@@ -69,16 +78,31 @@ export default function MyActiveTimeslots() {
     }
 
     function showPopup(purchase: ReservedBooking) {
-        const contentMsg = `You are about to pay for the usage of ${purchase.assetName}.\n\nYour card will be charged with ${(purchase.servicePrice!.toFixed(2))} ${purchase.currency}.\n\n\nPlease confirm your payment. The wash button will then be activated.`;
+        let contentMsg = `You are about to use the machine ${purchase.assetName}.\n\n`;
 
-        return isPopupShown && <Popup
-            buttonLabel={CONSTANTS.confirmPaymentLabel}
+        const priceInPoints = convertPriceToPoints(purchase.servicePrice!, purchase.currency!);
+        let pointBalanceContent = null;
+
+        if (priceInPoints < user?.loyaltyPoints!) {
+            pointBalanceContent = `Loyalty point balance: ${user?.loyaltyPoints}`;
+            contentMsg += `You can either choose to pay by card or using loyalty points.\n\nPrice of the use is either ${(purchase.servicePrice!.toFixed(2))} ${purchase.currency} or ${priceInPoints} loyalty points.`
+        } else {
+            contentMsg += `Your card will be charged with ${(purchase.servicePrice!.toFixed(2))} ${purchase.currency}.\n\n\nPlease confirm your payment. The wash button will then be activated.`;        
+        }
+
+        return isPopupShown && <PurchasePopup
+            user={user!}
+            useCardButtonLabel={CONSTANTS.useCardLabel}
+            usePointsButtonLabel={CONSTANTS.usePointsLabel}
             title={CONSTANTS.paymentConfirmationTitleLabel}
             content={contentMsg}
+            pointBalanceContent={pointBalanceContent ?? undefined}
+            priceInPoints={priceInPoints}
+            assetId={purchase.assetId}
             errorMsg={popupResMsg?.isError ? popupResMsg.message : undefined}
             successMsg={popupResMsg?.isError === false ? popupResMsg.message : undefined}
             closePopupFn={() => handlePopupClose()}
-            actionFn={() => handlePurchaseAsset(purchase)}   // TODO: here will go a call to make a purchase
+            actionFn={(isPayingWithLoyaltyPoints: boolean) => handlePurchaseAsset(purchase, isPayingWithLoyaltyPoints)}
             isLoading={isPopupLoading}
         />
     }

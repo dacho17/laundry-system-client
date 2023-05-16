@@ -7,6 +7,7 @@ import AccountPaymentSection from '../../components/accountPaymentSection/Accoun
 import { useAppDispatch } from '../../../services/store';
 import { refreshUserLogin } from '../../../services/slices/AuthSlice';
 import { setFormResMessage } from '../../../services/slices/AccountSlice';
+import LoyaltyProgramSection from '../../components/loyaltyProgramSection/LoyaltyProgramSection';
 
 export default function AccountPage() {
     const dispatch = useAppDispatch();
@@ -30,13 +31,15 @@ export default function AccountPage() {
                 </div>
             case 2:
                 return <ActivityTable />;
+            case 3:
+                return <LoyaltyProgramSection />;
         }
     }
 
     return (
         <div className='page-content'>
             <SectionNavigator
-                sectionLabels={[CONSTANTS.infoLabel, CONSTANTS.paymentLabel, CONSTANTS.activityHistoryLabel]}
+                sectionLabels={[CONSTANTS.infoLabel, CONSTANTS.paymentLabel, CONSTANTS.activityHistoryLabel, CONSTANTS.loyaltyProgramLabel]}
                 currentlyActiveSection={activeSection}
                 setActiveSectionFn={setActiveSection}
             />

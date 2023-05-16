@@ -1,0 +1,42 @@
+#loyalty-program-points {
+    font-size: var(--title-font-large-screen);
+    margin-bottom: 30px;
+}
+
+#loyalty-program-table-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+#loyalty-program-table {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    padding-top: 10px;
+    overflow: scroll;
+}
+
+.loyalty-program-table__header-item {
+    width: 20%;
+    font-size: var(--title-font-large-screen);
+    text-align: center;
+}
+
+@media only screen and (max-width: 800px) {
+    #loyalty-program-table-header {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 550px) {
+    #loyalty-program-points {
+        margin-top: 10px;
+        font-size: var(--title-font-small-screen);
+    }
+}

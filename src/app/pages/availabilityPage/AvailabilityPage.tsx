@@ -17,8 +17,6 @@ export default function AvailabilityPage() {
 
     useEffect(() => {
         dispatch(refreshUserLogin())
-
-        dispatch(fetchEarliestAvailabilities());
     }, [dispatch]);
 
     function getPageContent() {

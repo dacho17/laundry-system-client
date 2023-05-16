@@ -10,6 +10,8 @@ import TenantRegistrationFormDto from "../dtos/TenantRegFormDto";
 import ResidenceAdminRegFormDto from "../dtos/ResidenceAdminRegFormDto";
 import ForgotPasswordFormDto from "../dtos/ForgotPasswordFormDto";
 import DailyBookingRequestDto from "../dtos/DailyBookingRequestDto";
+import PurchaseLoyaltyOfferDto from "../dtos/PurchaseLoyaltyOfferDto";
+import PurchaseRequestDto from "../dtos/PurchaseRequestDto";
 
 // NOTE: attaching jwt to Authorization header if the token is present
 axios.interceptors.request.use(request => {
@@ -72,7 +74,7 @@ const backendAPI = {
     // signup: (values: User) => requests.post(`${BE_API_URL}/auth/signup`, values),
 
     getLaundryAssetsEarliestAvailabilities: () => requests.get(`${BE_API_URL}/availability`),
-    purchaseLaundryService: (values: BookingRequestDto) => requests.post(`${BE_API_URL}/availability/purchase`, values),
+    purchaseLaundryService: (values: PurchaseRequestDto) => requests.post(`${BE_API_URL}/availability/purchase`, values),
 
     getAccessibleLaundryAssets: () => requests.get(`${BE_API_URL}/booking/laundry-assets`),
     getLaundryAssetDailyBookings: (values: DailyBookingRequestDto) => requests.post(`${BE_API_URL}/booking/daily-bookings`, values),
@@ -85,6 +87,8 @@ const backendAPI = {
     getPaymentCards: () => requests.get(`${BE_API_URL}/account/payment-cards`),
     updatePaymentCard: (values: UpdatePaymentCardForm) => requests.post(`${BE_API_URL}/account/payment-card`, values),
     getActivityHistory: () => requests.get(`${BE_API_URL}/account/activity-history`),
+    purchaseLoyaltyOffer: (values: PurchaseLoyaltyOfferDto) => requests.post(`${BE_API_URL}/account/loyalty-program/loyalty-offer`, values),
+    getLoyaltyOffers: () => requests.get(`${BE_API_URL}/account/loyalty-program/loyalty-offers`),
 
     createResidenceTenant: (values: TenantRegistrationFormDto) => requests.post(`${BE_API_URL}/residence-admin/tenant`, values),
     getResidenceTenants: () => requests.get(`${BE_API_URL}/residence-admin/tenants`),

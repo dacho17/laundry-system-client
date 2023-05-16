@@ -1,17 +1,23 @@
 import { useEffect, useState } from 'react';
 import CONSTANTS from '../../../assets/constants';
-import './ActivityTable.css';
-import { getActivity } from '../../utils/enumHelper';
 import { useAppDispatch, useAppSelector } from '../../../services/store';
 import { fetchActivityHistory } from '../../../services/slices/AccountSlice';
 import LoadingComponent from '../loadingComponent/LoadingComponent';
-import ActivityDto from '../../../dtos/ActivityDto';
 import { formatDate, formatTimeslot } from '../../utils/elementHelper';
+import ActivityHistoryEntryDto from '../../../dtos/ActivityHistoryEntryDto';
+import { ActivityHistoryEntryType, getActivityHistoryEntryType } from '../../../enums/ActivityHistoryEntryType';
+import './ActivityTable.css';
 
 const headerLabels = [
-    CONSTANTS.timeOfActivityLabel, CONSTANTS.activityLabel, CONSTANTS.chosenTimeslotLabel,
-    CONSTANTS.assetLabel, CONSTANTS.paidAmountLabel
+    CONSTANTS.timeOfActivityLabel, CONSTANTS.activityLabel, CONSTANTS.descriptionLabel, CONSTANTS.paidAmountLabel
 ];
+
+interface ActivityHistoryFormattedEntry {
+    timeOfActivity: string;
+    activityType: string;
+    description: string;
+    price?: string;
+}
 
 function getWindowDimensions() {
     const { innerWidth: width, innerHeight: height } = window;
@@ -43,24 +49,61 @@ export default function ActivityTable() {
         };
     }, [activityHistory, dispatch]);
 
-    function getTableEntry(activity: ActivityDto) {
-        const timeslotDate = new Date(activity.chosenTimeslot);
-        const formattedTimeslot = `${formatDate(timeslotDate)} ${formatTimeslot(timeslotDate)}`;
+    function getActivityType(activityType: ActivityHistoryEntryType) {
+        switch(getActivityHistoryEntryType(activityType)) {
+            case ActivityHistoryEntryType.ASSET_BOOKING:
+                return CONSTANTS.bookingLabel;
+            case ActivityHistoryEntryType.ASSET_PURCHASE:
+            case ActivityHistoryEntryType.OFFER_PURCHASE:
+                return CONSTANTS.paymentLabel;
+        }
+    }
+
+    function getActivityDescription(activity: ActivityHistoryEntryDto) {
+        if (activity.assetType) {
+            const timeslotDate = new Date(activity.chosenTimeslot!);
+            const timeslotStr = `${formatDate(timeslotDate)} ${formatTimeslot(timeslotDate)}`
+
+            return `${activity.assetName} on ${timeslotStr}`;
+        } else {    // it is an offer purchase
+            return `Loyalty Offer: ${activity.offerName} (${activity.loyaltyPointsPurchased} points)`;
+        }
+    }
+
+    function getPrice(activity: ActivityHistoryEntryDto) {
+        switch(getActivityHistoryEntryType(activity.activityType)) {
+            case ActivityHistoryEntryType.ASSET_BOOKING:
+                return CONSTANTS.freeOfChargeLabel;
+            case ActivityHistoryEntryType.ASSET_PURCHASE:
+            case ActivityHistoryEntryType.OFFER_PURCHASE:
+                if (activity.loyaltyPointsUsed) {
+                    return `${activity.loyaltyPointsUsed} points`;
+                }
+                return `${activity.paidAmount!.toFixed(2)} ${activity.currency}`;
+        }
+    }
+
+    function getTableEntry(activity: ActivityHistoryEntryDto) {
+        const formattedEntry = {
+            timeOfActivity: activity.timeOfActivity,
+            activityType: getActivityType(activity.activityType),
+            description: getActivityDescription(activity),
+            price: getPrice(activity)
+        } as ActivityHistoryFormattedEntry;
+
         if (windowSize.width > 800) {
             return <>
-                <div className='activity-table__item'>{activity.timeOfActivity}</div>
-                <div className='activity-table__item'>{getActivity(activity.activityType)}</div>
-                <div className='activity-table__item'>{formattedTimeslot}</div>
-                <div className='activity-table__item'>{activity.assetName}</div>
-                <div className='activity-table__item'>{activity.servicePrice?.toFixed(2) ?? ''}</div>
+                <div className='activity-table__item'>{formattedEntry.timeOfActivity}</div>
+                <div className='activity-table__item'>{formattedEntry.activityType}</div>
+                <div className='activity-table__item'>{formattedEntry.description}</div>
+                <div className='activity-table__item'>{formattedEntry.price}</div>
             </>
         } else {
             return <>
-                <div className='activity-table__item'>{headerLabels[0]}: {activity.timeOfActivity}</div>
-                <div className='activity-table__item'>{headerLabels[1]}: {getActivity(activity.activityType)}</div>
-                <div className='activity-table__item'>{headerLabels[2]}: {formattedTimeslot}</div>
-                <div className='activity-table__item'>{headerLabels[3]}: {activity.assetName}</div>
-                <div className='activity-table__item'>{headerLabels[4]}: {activity.servicePrice?.toFixed(2) ?? ''}</div>
+                <div className='activity-table__item'>{headerLabels[0]}: {formattedEntry.timeOfActivity}</div>
+                <div className='activity-table__item'>{headerLabels[1]}: {formattedEntry.activityType}</div>
+                <div className='activity-table__item'>{headerLabels[2]}: {formattedEntry.description}</div>
+                <div className='activity-table__item'>{headerLabels[3]}: {formattedEntry.price}</div>
                 <hr className='activity-table__delimiter' />
             </>
         }

@@ -1,19 +1,19 @@
 import { useState } from 'react';
-import Popup from '../popup/Popup';
 import CtaButton from '../ctaButton/CtaButton';
 import CONSTANTS from '../../../assets/constants';
-import './AvailabilityEntry.css';
 import AvailabilityEntryIcon from '../availabilityEntryIcon/AvailabilityEntryIcon';
 import { useNavigate } from 'react-router-dom';
 import ActivityDto from '../../../dtos/ActivityDto';
 import { useAppDispatch, useAppSelector } from '../../../services/store';
-import { fetchEarliestAvailabilities, purchaseLaundryAssetService, setPopupResMessage } from '../../../services/slices/AvailabilitySlice';
-import BookingRequestDto from '../../../dtos/BookingRequestDto';
+import { purchaseLaundryAssetService, setPopupResMessage } from '../../../services/slices/AvailabilitySlice';
 import TimeslotAvailabilityDto from '../../../dtos/TimeslotAvailabilityDto';
 import { TimeslotAvailabilityStatus, getTimeslotAvailabilityStatus } from '../../../enums/TimeslotAvailabilityStatus';
 import { formatDate, formatTimeslot, getDateHourMinute } from '../../utils/elementHelper';
-import { fetchMyActiveBookings } from '../../../services/slices/BookingSlice';
-
+import PurchasePopup from '../purchasePopup/PurchasePopup';
+import { convertPriceToPoints } from '../../utils/priceConverter';
+import PurchaseRequestDto from '../../../dtos/PurchaseRequestDto';
+import { setLoyaltyPoints } from '../../../services/slices/AuthSlice';
+import './AvailabilityEntry.css';
 
 interface AvailabilityEntryProps {
     availability: TimeslotAvailabilityDto
@@ -45,7 +45,24 @@ export default function AvailabilityEntry({availability}: AvailabilityEntryProps
     const [isPopupShown, setIsPopupShown] = useState(false);
     const dispatch = useAppDispatch();
     const { isPopupLoading, popupResMsg } = useAppSelector(state => state.availability);
+    const { user } = useAppSelector(state => state.auth);
     const navigate = useNavigate();
+
+    function handlePurchaseAsset(activity: ActivityDto, isPayingWithLoyaltyPoints: boolean) {
+        const purchaseRequest = {
+            assetId: activity.assetId,
+            isPayingWithLoyaltyPoints: isPayingWithLoyaltyPoints
+        } as PurchaseRequestDto;
+
+        dispatch(purchaseLaundryAssetService(purchaseRequest)).then(res => {
+            if (res.meta.requestStatus === CONSTANTS.fulfilledLabel) {
+                const currentPointBalance = user!.loyaltyPoints;
+                const newPointBalance = currentPointBalance - convertPriceToPoints(activity.servicePrice!, activity.currency!);
+                dispatch(setLoyaltyPoints(newPointBalance));
+                dispatch(setPopupResMessage(null));
+            }
+        });
+    }
 
     const isAvailable = [TimeslotAvailabilityStatus.FREE_TO_USE, TimeslotAvailabilityStatus.FREE_TO_USE_BOOKED].includes(getTimeslotAvailabilityStatus(availability.status));
     let [buttonLabel, note] = getLabels(availability);
@@ -70,34 +87,32 @@ export default function AvailabilityEntry({availability}: AvailabilityEntryProps
         }
     }
 
-    function handlePurchaseAsset() {
-        const purchaseRequest = {
-            assetId: availability.activity.assetId,
-            timeslot: availability.activity.chosenTimeslot
-        } as BookingRequestDto;
-
-        dispatch(purchaseLaundryAssetService(purchaseRequest)).then(res => {
-            if (res.meta.requestStatus === CONSTANTS.fulfilledLabel) {
-                dispatch(fetchEarliestAvailabilities());
-            }
-        });
-    }
-
     function handlePopupClose() {
         dispatch(setPopupResMessage(null));
         setIsPopupShown(false);
     }
 
-    function showPopup(activity: ActivityDto) {
+    function showPopup(activity: ActivityDto) { // showing popup only for purchases
         const contentMsg = `You are about to pay for the usage of ${activity.assetName}.\n\nYour card will be charged with ${activity.servicePrice?.toFixed(2)} ${activity.currency}.\n\n\nPlease confirm your payment. The wash button will then be activated.`;
+        const priceInPoints = convertPriceToPoints(activity.servicePrice!, activity.currency!);
+        let pointBalanceContent = null;
 
-        return isPopupShown && <Popup
-            buttonLabel={CONSTANTS.confirmPaymentLabel}
+        if (priceInPoints < user?.loyaltyPoints!) {
+            pointBalanceContent = `You have enough loyalty points to pay for the service: ${priceInPoints}.\nPoint balance: ${user?.loyaltyPoints}`;
+        }
+
+        return isPopupShown && <PurchasePopup
+            user={user!}
+            useCardButtonLabel={CONSTANTS.useCardLabel}
+            usePointsButtonLabel={CONSTANTS.usePointsLabel}
             title={CONSTANTS.paymentConfirmationTitleLabel}
             content={contentMsg}
+            priceInPoints={priceInPoints}
+            pointBalanceContent={pointBalanceContent ?? undefined}
             errorMsg={popupResMsg?.isError ? popupResMsg.message : undefined}
             closePopupFn={() => handlePopupClose()}
-            actionFn={() => handlePurchaseAsset()}
+            assetId={availability.activity.assetId}
+            actionFn={(isPayingWithLoyaltyPoints: boolean) => handlePurchaseAsset(activity, isPayingWithLoyaltyPoints)}
             isLoading={isPopupLoading}
             successMsg={popupResMsg?.isError === false ? popupResMsg.message : undefined}
         />

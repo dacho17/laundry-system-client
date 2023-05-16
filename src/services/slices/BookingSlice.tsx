@@ -19,7 +19,7 @@ interface LaundryAssetDailyBookingsState {
     isDropdownLoading: boolean;
     isTableLoading: boolean;
 
-    popupMsg: ResponseMessage | null;
+    popupResMsg: ResponseMessage | null;
     isPopupLoading: boolean;
 }
 
@@ -35,7 +35,7 @@ const initialState: LaundryAssetDailyBookingsState = {
     tableErrorMsg: null,
     isTableLoading: true,
 
-    popupMsg: null,
+    popupResMsg: null,
     isPopupLoading: false,
 }
 
@@ -137,7 +137,7 @@ export const bookingsSlice = createSlice({
             state.myActiveBookings = action.payload as ActiveBookingsDto;
         },
         setPopupResMessage: (state, action) => {
-            state.popupMsg = action.payload as ResponseMessage;
+            state.popupResMsg = action.payload as ResponseMessage;
         }
     },
     extraReducers: (builder => {
@@ -170,14 +170,14 @@ export const bookingsSlice = createSlice({
             state.isPopupLoading = false;
         });
         builder.addMatcher(isAnyOf(bookAsset.rejected), (state, action) => {
-            state.popupMsg = {
+            state.popupResMsg = {
                 message: action.payload as string,
                 isError: true
             } as ResponseMessage;
             state.isPopupLoading = false;
         });
         builder.addMatcher(isAnyOf(bookAsset.pending), (state, action) => {
-            state.popupMsg = null;
+            state.popupResMsg = null;
             state.isPopupLoading = true;
         });
     })

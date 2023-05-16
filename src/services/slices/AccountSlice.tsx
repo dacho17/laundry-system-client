@@ -9,31 +9,40 @@ import ActivityDto from "../../dtos/ActivityDto";
 import ResidenceDto from "../../dtos/ResidenceDto";
 import PaymentCardDto from "../../dtos/PaymentCardDto";
 import ResponseMessage from "../../interfaces/responseMessage";
+import LoyaltyOfferDto from "../../dtos/LoyaltyOfferDto";
+import PurchaseLoyaltyOfferDto from "../../dtos/PurchaseLoyaltyOfferDto";
+import ActivityHistoryEntryDto from "../../dtos/ActivityHistoryEntryDto";
 
 interface AccountSlice {
     isFetchLoading: boolean,
     isFormLoading: boolean;
+    isPopupLoading: boolean;
     fetchResMsg: ResponseMessage | null;
     formResMsg: ResponseMessage | null;
+    popupResMsg: ResponseMessage | null;
 
     userInformation: UpdateUserInfoForm | null;
     residenceInformation: ResidenceDto | null;
     currentPaymentCard: PaymentCardDto | null;
     inactivePaymentCards: PaymentCardDto[] | null;
-    activityHistory: ActivityDto[] | null;
+    activityHistory: ActivityHistoryEntryDto[] | null;
+    loyaltyOffers: LoyaltyOfferDto[] | null;
 }
 
 const initialState: AccountSlice = {
     isFetchLoading: false,
     isFormLoading: false,
+    isPopupLoading: false,
     fetchResMsg: null,
     formResMsg: null,
+    popupResMsg: null,
 
     userInformation: null,
     residenceInformation: null,
     currentPaymentCard: null,
     inactivePaymentCards: null,
-    activityHistory: null
+    activityHistory: null,
+    loyaltyOffers: null
 }
 
 export const fetchAccountInformation = createAsyncThunk<any>(
@@ -107,8 +116,39 @@ export const fetchActivityHistory = createAsyncThunk<any>(
     async (data, thunkAPI) => {
         try {
             const res: AxiosResponse = await backendAPI.getActivityHistory();
-            const activityHistory: ActivityDto[] = res.data.data!;
+            const activityHistory: ActivityHistoryEntryDto[] = res.data.data!;
             thunkAPI.dispatch(setActivityHistory(activityHistory));
+        } catch (err: any) {
+            const authErrorMsg = err.data.message;
+            return thunkAPI.rejectWithValue(authErrorMsg);
+        }
+    }
+);
+
+export const fetchLoyaltyOffers = createAsyncThunk<any>(
+    "account/fetchLoyaltyOffers",
+    async (data, thunkAPI) => {
+        try {
+            const res: AxiosResponse = await backendAPI.getLoyaltyOffers();
+            const loyaltyOffers: LoyaltyOfferDto[] = res.data.data!;
+            thunkAPI.dispatch(setLoyaltyOffers(loyaltyOffers));
+        } catch (err: any) {
+            const authErrorMsg = err.data.message;
+            return thunkAPI.rejectWithValue(authErrorMsg);
+        }
+    }
+);
+
+export const purchaseLoyaltyOffer = createAsyncThunk<any, PurchaseLoyaltyOfferDto>(
+    "account/purchaseLoyaltyOffer",
+    async (data, thunkAPI) => {
+        try {
+            const res: AxiosResponse = await backendAPI.purchaseLoyaltyOffer(data);
+            const resMessage: ResponseMessage = {
+                message: res.data.message! as string,
+                isError: false
+            } as ResponseMessage;
+            thunkAPI.dispatch(setPopupResMessage(resMessage));
         } catch (err: any) {
             const authErrorMsg = err.data.message;
             return thunkAPI.rejectWithValue(authErrorMsg);
@@ -121,6 +161,9 @@ export const accountSlice = createSlice({
     name: "account",
     initialState,
     reducers: {
+        setPopupResMessage: (state, action) => {
+            state.popupResMsg = action.payload as ResponseMessage;
+        },
         setFormResMessage: (state, action) => {
             state.formResMsg = action.payload as ResponseMessage;
         },
@@ -138,23 +181,35 @@ export const accountSlice = createSlice({
             state.inactivePaymentCards = inactiveCards;
         },
         setActivityHistory: (state, action) => {
-            state.activityHistory = action.payload as ActivityDto[];
+            state.activityHistory = action.payload as ActivityHistoryEntryDto[];
         },
+        setLoyaltyOffers: (state, action) => {
+            state.loyaltyOffers = action.payload as LoyaltyOfferDto[];
+        }
     },
     extraReducers: (builder => {
-        builder.addMatcher(isAnyOf(fetchAccountInformation.fulfilled, fetchPaymentCards.fulfilled, fetchActivityHistory.fulfilled), (state, action) => {
+        builder.addMatcher(isAnyOf(fetchAccountInformation.fulfilled, fetchPaymentCards.fulfilled, fetchActivityHistory.fulfilled, fetchLoyaltyOffers.fulfilled), (state, action) => {
             state.fetchResMsg = null;
             state.isFetchLoading = false;
+        });
+        builder.addMatcher(isAnyOf(purchaseLoyaltyOffer.fulfilled), (state, action) => {
+            state.isPopupLoading = false;
         });
         builder.addMatcher(isAnyOf(updateUserInfo.fulfilled,  updatePaymentCard.fulfilled), (state, action) => {
             state.isFormLoading = false;
         });
-        builder.addMatcher(isAnyOf(fetchAccountInformation.rejected, fetchPaymentCards.rejected, fetchActivityHistory.rejected), (state, action) => {
+        builder.addMatcher(isAnyOf(fetchAccountInformation.rejected, fetchPaymentCards.rejected, fetchActivityHistory.rejected, fetchLoyaltyOffers.rejected), (state, action) => {
             state.fetchResMsg = {
                 message: action.payload as string,
                 isError: true
             } as ResponseMessage;
             state.isFetchLoading = false;
+        });
+        builder.addMatcher(isAnyOf(purchaseLoyaltyOffer.rejected), (state, action) => {
+            state.popupResMsg = {
+                message: action.payload as string,
+                isError: true
+            } as ResponseMessage;
         });
         builder.addMatcher(isAnyOf(updateUserInfo.rejected,  updatePaymentCard.rejected), (state, action) => {
             state.formResMsg = {
@@ -163,7 +218,7 @@ export const accountSlice = createSlice({
             } as ResponseMessage;
             state.isFormLoading = false;
         });
-        builder.addMatcher(isAnyOf(fetchAccountInformation.pending, fetchPaymentCards.pending, fetchActivityHistory.pending), (state, action) => {
+        builder.addMatcher(isAnyOf(fetchAccountInformation.pending, fetchPaymentCards.pending, fetchActivityHistory.pending, fetchLoyaltyOffers.pending), (state, action) => {
                 state.fetchResMsg = null;
                 state.isFetchLoading = true;
         });
@@ -171,7 +226,12 @@ export const accountSlice = createSlice({
             state.formResMsg = null;
             state.isFormLoading = true;
         });
+        builder.addMatcher(isAnyOf(purchaseLoyaltyOffer.pending), (state, action) => {
+            state.popupResMsg = null;
+            state.isPopupLoading = false;
+        });
     })
 });
 
-export const { setAccountInformation, setUserInfoForm, setFormResMessage, setPaymentCards, setActivityHistory } = accountSlice.actions;
+export const { setPopupResMessage, setAccountInformation, setUserInfoForm, setFormResMessage,
+    setPaymentCards, setActivityHistory, setLoyaltyOffers } = accountSlice.actions;

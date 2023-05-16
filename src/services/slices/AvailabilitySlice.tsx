@@ -4,6 +4,7 @@ import backendAPI from "../../apis/backendAPI";
 import ResponseMessage from "../../interfaces/responseMessage";
 import BookingRequestDto from "../../dtos/BookingRequestDto";
 import TimeslotAvailabilityDto from "../../dtos/TimeslotAvailabilityDto";
+import PurchaseRequestDto from "../../dtos/PurchaseRequestDto";
 
 
 interface AvailabilitiesState {
@@ -37,7 +38,7 @@ export const fetchEarliestAvailabilities = createAsyncThunk<any>(
     }
 );
 
-export const purchaseLaundryAssetService = createAsyncThunk<any, BookingRequestDto>(
+export const purchaseLaundryAssetService = createAsyncThunk<any, PurchaseRequestDto>(
     "availability/purchaseLaundryAssetService",
     async (data, thunkAPI) => {
         try {

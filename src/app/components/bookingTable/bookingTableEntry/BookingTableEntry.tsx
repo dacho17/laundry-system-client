@@ -19,7 +19,7 @@ interface BookingTableEntryProps {
 
 export default function BookingTableEntry(props: BookingTableEntryProps) {
     const dispatch = useAppDispatch();
-    const { isPopupLoading, popupMsg } = useAppSelector(state => state.booking);
+    const { isPopupLoading, popupResMsg } = useAppSelector(state => state.booking);
 
     const [isPopupShown, setIsPopupShown] = useState(false);
 
@@ -58,8 +58,8 @@ export default function BookingTableEntry(props: BookingTableEntryProps) {
                     buttonLabel={CONSTANTS.confirmBookingLabel}
                     title={CONSTANTS.bookingConfirmationTitleLabel}
                     content={bookingMsgContent}
-                    errorMsg={popupMsg?.isError ? popupMsg.message : undefined}
-                    successMsg={popupMsg?.isError === false ? popupMsg.message : undefined}
+                    errorMsg={popupResMsg?.isError ? popupResMsg.message : undefined}
+                    successMsg={popupResMsg?.isError === false ? popupResMsg.message : undefined}
                     isLoading={isPopupLoading}
                     closePopupFn={() => handlePopupClose()}
                     actionFn={() => handleBooking()}

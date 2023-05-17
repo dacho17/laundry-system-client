@@ -43,7 +43,7 @@ export default function LoyaltyProgramEntry({loyaltyOffer, isMobileDeviceView, h
     }
 
     function showPopup() {
-        const contentMsg = `You are about to purchase ${loyaltyOffer.name} offer.\n\nYour card will be charged with ${loyaltyOffer.price.toFixed(2)} ${loyaltyOffer.currency}.\n\n\nPlease confirm your payment.`;
+        const contentMsg = `You are about to purchase ${loyaltyOffer.name} offer and receive ${loyaltyOffer.loyaltyPoints} points.\n\nYour card will be charged with ${loyaltyOffer.price.toFixed(2)} ${loyaltyOffer.currency}.\n\n\nPlease confirm your payment.`;
 
         return isPopupShown && <Popup
             buttonLabel={CONSTANTS.confirmPaymentLabel}

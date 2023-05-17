@@ -8,15 +8,16 @@ import PurchaseRequestDto from "../../dtos/PurchaseRequestDto";
 
 interface AvailabilitiesState {
     earliestAvailabilities: TimeslotAvailabilityDto[] | null;
+    shownPopupAssetId: number;
     errorMsg: string | null;
     isLoading: boolean;
-
     popupResMsg: ResponseMessage | null,
     isPopupLoading: boolean,
 }
 
 const initialState: AvailabilitiesState = {
     earliestAvailabilities: null,
+    shownPopupAssetId: 0,
     errorMsg: null,
     isLoading: true,
     popupResMsg: null,
@@ -60,6 +61,9 @@ export const availabilitySlice = createSlice({
     name: "availability",
     initialState,
     reducers: {
+        setShownPopupAssetId: (state, action) => {
+            state.shownPopupAssetId = action.payload as number;
+        },
         setPopupResMessage: (state, action) => {
             state.popupResMsg = action.payload as ResponseMessage;
             state.isPopupLoading = false;
@@ -97,4 +101,4 @@ export const availabilitySlice = createSlice({
     })
 });
 
-export const { setEarliestAvailabilities, setPopupResMessage } = availabilitySlice.actions;
+export const { setShownPopupAssetId, setEarliestAvailabilities, setPopupResMessage } = availabilitySlice.actions;

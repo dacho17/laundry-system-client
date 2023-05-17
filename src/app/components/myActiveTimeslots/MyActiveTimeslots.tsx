@@ -11,7 +11,7 @@ import { convertPriceToPoints } from '../../utils/priceConverter';
 import PurchasePopup from '../purchasePopup/PurchasePopup';
 import './MyActiveTimeslots.css';
 import PurchaseRequestDto from '../../../dtos/PurchaseRequestDto';
-import { purchaseLaundryAssetService, setPopupResMessage } from '../../../services/slices/AvailabilitySlice';
+import { purchaseLaundryAssetService, setPopupResMessage, setShownPopupAssetId } from '../../../services/slices/AvailabilitySlice';
 import { setLoyaltyPoints } from '../../../services/slices/AuthSlice';
 
 function getWindowDimensions() {
@@ -25,17 +25,13 @@ function getWindowDimensions() {
 export default function MyActiveTimeslots() {
     const dispatch = useAppDispatch();
     const { myActiveBookings, isTableLoading, tableErrorMsg } = useAppSelector(state => state.booking); 
-    const { isPopupLoading, popupResMsg } = useAppSelector(state => state.availability);
+    const { shownPopupAssetId, isPopupLoading, popupResMsg } = useAppSelector(state => state.availability);
     const { user } = useAppSelector(state => state.auth);
-
-    const [isPopupShown, setIsPopupShown] = useState(false);
 
     const [windowSize, setWindowSize] = useState(getWindowDimensions());
 
     useEffect(() => {
-        if (myActiveBookings == null) {
-            dispatch(fetchMyActiveBookings());
-        }
+        dispatch(fetchMyActiveBookings());
 
         function handleWindowResize() {
         setWindowSize(getWindowDimensions());
@@ -46,7 +42,7 @@ export default function MyActiveTimeslots() {
         return () => {
         window.removeEventListener('resize', handleWindowResize);
         };
-    }, [dispatch, myActiveBookings]);
+    }, [dispatch]);
 
     function handlePurchaseAsset(purchase: ReservedBooking, isPayingWithLoyaltyPoints: boolean) {
         const purchaseRequest = {
@@ -55,7 +51,7 @@ export default function MyActiveTimeslots() {
         } as PurchaseRequestDto;
 
         dispatch(purchaseLaundryAssetService(purchaseRequest)).then(res => {
-            if (res.meta.requestStatus === CONSTANTS.fulfilledLabel) {
+            if (res.meta.requestStatus === CONSTANTS.fulfilledLabel && purchaseRequest.isPayingWithLoyaltyPoints) {
                 const currentPointBalance = user!.loyaltyPoints;
                 const newPointBalance = currentPointBalance - convertPriceToPoints(purchase.servicePrice!, purchase.currency!);
                 dispatch(setLoyaltyPoints(newPointBalance));  
@@ -73,7 +69,7 @@ export default function MyActiveTimeslots() {
 
     function handlePopupClose() {
         dispatch(setPopupResMessage(null));
-        setIsPopupShown(false);
+        dispatch(setShownPopupAssetId(0));
         dispatch(fetchMyActiveBookings());
     }
 
@@ -90,7 +86,7 @@ export default function MyActiveTimeslots() {
             contentMsg += `Your card will be charged with ${(purchase.servicePrice!.toFixed(2))} ${purchase.currency}.\n\n\nPlease confirm your payment. The wash button will then be activated.`;        
         }
 
-        return isPopupShown && <PurchasePopup
+        return <PurchasePopup
             user={user!}
             useCardButtonLabel={CONSTANTS.useCardLabel}
             usePointsButtonLabel={CONSTANTS.usePointsLabel}
@@ -149,11 +145,11 @@ export default function MyActiveTimeslots() {
                             key={`purchase-button-${index}`}
                             isDisabled={false}
                             label={CONSTANTS.useLabel}
-                            actionFn={() => setIsPopupShown(true)} />
+                            actionFn={() => dispatch(setShownPopupAssetId(booking.assetId))} />
                     </>
                     : <>{note}</>
                 }</div>
-                {showPopup(booking)}
+                {booking.assetId === shownPopupAssetId && showPopup(booking)}
             </div>
         });
     }
@@ -163,11 +159,7 @@ export default function MyActiveTimeslots() {
             return <div className='message-container-centered'>{tableErrorMsg}</div>
         } else if (isTableLoading || listOfBookings == null) {
             return <LoadingComponent />
-        } 
-        // else if (listOfBookings === undefined || listOfBookings === null) {
-        //     return <div className='message-container-centered'>{CONSTANTS.theDataCannotBeFetchedMomentarily}</div>
-        // } 
-        else {
+        } else {
             if (listOfBookings?.length === 0) {
                 const noBookingsPresentMessage = getNoBookingsOfTypeMsg(activeBookingType);
                 return <div className='my-active-timeslots-section-table margin-bottom-2' style={{paddingTop: 0}}>

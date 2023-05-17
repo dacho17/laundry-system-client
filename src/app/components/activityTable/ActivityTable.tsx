@@ -34,12 +34,10 @@ export default function ActivityTable() {
     const [windowSize, setWindowSize] = useState(getWindowDimensions());
 
     useEffect(() => {
-        if (activityHistory == null) {
-            dispatch(fetchActivityHistory());
-        }
+        dispatch(fetchActivityHistory());
 
         function handleWindowResize() {
-        setWindowSize(getWindowDimensions());
+            setWindowSize(getWindowDimensions());
         }
 
         window.addEventListener('resize', handleWindowResize);
@@ -47,7 +45,7 @@ export default function ActivityTable() {
         return () => {
         window.removeEventListener('resize', handleWindowResize);
         };
-    }, [activityHistory, dispatch]);
+    }, [dispatch]);
 
     function getActivityType(activityType: ActivityHistoryEntryType) {
         switch(getActivityHistoryEntryType(activityType)) {

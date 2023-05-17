@@ -3,10 +3,11 @@ import CONSTANTS from '../../../assets/constants';
 import { useAppDispatch, useAppSelector } from '../../../services/store';
 import { fetchActivityHistory } from '../../../services/slices/AccountSlice';
 import LoadingComponent from '../loadingComponent/LoadingComponent';
-import { formatDate, formatTimeslot } from '../../utils/elementHelper';
+import { formatDate, formatTimeslot, getDateAndTime } from '../../utils/elementHelper';
 import ActivityHistoryEntryDto from '../../../dtos/ActivityHistoryEntryDto';
 import { ActivityHistoryEntryType, getActivityHistoryEntryType } from '../../../enums/ActivityHistoryEntryType';
 import './ActivityTable.css';
+import { getDateHourMinute } from '../../utils/elementHelper';
 
 const headerLabels = [
     CONSTANTS.timeOfActivityLabel, CONSTANTS.activityLabel, CONSTANTS.descriptionLabel, CONSTANTS.paidAmountLabel
@@ -89,16 +90,18 @@ export default function ActivityTable() {
             price: getPrice(activity)
         } as ActivityHistoryFormattedEntry;
 
+        const formattedDate = getDateAndTime(new Date(formattedEntry.timeOfActivity));
+
         if (windowSize.width > 800) {
             return <>
-                <div className='activity-table__item'>{formattedEntry.timeOfActivity}</div>
+                <div className='activity-table__item'>{formattedDate}</div>
                 <div className='activity-table__item'>{formattedEntry.activityType}</div>
                 <div className='activity-table__item'>{formattedEntry.description}</div>
                 <div className='activity-table__item'>{formattedEntry.price}</div>
             </>
         } else {
             return <>
-                <div className='activity-table__item'>{headerLabels[0]}: {formattedEntry.timeOfActivity}</div>
+                <div className='activity-table__item'>{headerLabels[0]}: {formattedDate}</div>
                 <div className='activity-table__item'>{headerLabels[1]}: {formattedEntry.activityType}</div>
                 <div className='activity-table__item'>{headerLabels[2]}: {formattedEntry.description}</div>
                 <div className='activity-table__item'>{headerLabels[3]}: {formattedEntry.price}</div>

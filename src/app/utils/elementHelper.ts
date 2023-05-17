@@ -108,3 +108,10 @@ export function getDateHourMinute(date: Date): string {
 
     return `${hour}:${minutes}`;
 }
+
+export function getDateAndTime(date: Date) {
+    const formattedDate = formatDate(date);
+    const formattedTime = getDateHourMinute(date);
+
+    return `${formattedDate} ${formattedTime}`;
+}
